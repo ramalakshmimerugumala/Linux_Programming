@@ -67,6 +67,54 @@ PID of child process:3726
 Child Process
 PID of child process:3727
 ```
+## 5. Excel()
+```
+#include <stdio.h>
+#include <unistd.h>
+int main(){
+int ret;
+printf("I an going to execute the ls command\n");
+ret=execl("/bin/ls","ls","-l",NULL);
+printf("I am executing");
+}
+output
+I an going to execute the ls command
+total 36
+-rwxrwxr-x 1 ramalakshmi ramalakshmi 16048 Oct 10 22:09 a.out
+-rw-rw-r-- 1 ramalakshmi ramalakshmi   290 Oct 10 22:09 execel.c
+-rw-rw-r-- 1 ramalakshmi ramalakshmi   411 Oct 10 08:01 execv.c
+-rw-rw-r-- 1 ramalakshmi ramalakshmi   343 Oct 10 21:58 fork.c
+-rw-rw-r-- 1 ramalakshmi ramalakshmi   391 Oct 10 21:58 multiple_child.c
+-rw-rw-r-- 1 ramalakshmi ramalakshmi   775 Oct 10 22:04 multiple_child_PID.c
+```
+## 6. Excecl using command line argument
+```
+#include <stdio.h>
+int main(int argc,char *argv[]){
+        for(int i=0;i<argc;i++){
+                printf("%s\n",argv[i]);
+        }
+}
+output
+ramalakshmi@ramalakshmi-VirtualBox:~/linux/processmanagement$ ./a.out viven hyderabad
+./a.out
+viven
+hyderabad
+```
+## 7.Execv
+```
+#include <stdio.h>
+#include <unistd.h>
+int main(){
+int ret;
+char *argv[]={"ps","-ef",NULL};
+printf("I am executing ps command\n");
+execv("/bin/ps",argv);
+printf("Executed successfully");
+}
+```
+
+
 
 
 
