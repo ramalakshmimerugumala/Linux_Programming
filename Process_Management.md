@@ -67,7 +67,7 @@ PID of child process:3726
 Child Process
 PID of child process:3727
 ```
-## 5. Excel()
+## 5. Execl()
 ```
 #include <stdio.h>
 #include <unistd.h>
@@ -87,7 +87,7 @@ total 36
 -rw-rw-r-- 1 ramalakshmi ramalakshmi   391 Oct 10 21:58 multiple_child.c
 -rw-rw-r-- 1 ramalakshmi ramalakshmi   775 Oct 10 22:04 multiple_child_PID.c
 ```
-## 6. Excecl using command line argument
+## 6. Execl using command line argument
 ```
 #include <stdio.h>
 int main(int argc,char *argv[]){
