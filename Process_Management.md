@@ -10,4 +10,63 @@ The PCB stores important information such as the process ID (PID), parent proces
 3.Child gets a copy of the parent’s memory.                       3.The existing memory is replaced with a new program.
 4.Returns 0 to the child, and child PID to the parent.            4If successful, it does not return (since the old process is replaced).
 ```
-## 3.
+## 3.Write a C program to demonstrate the use of fork() system call
+```
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+int main(){
+ int pid=fork();
+ if(pid<0){
+   printf("Fork failed");
+}
+else if(pid==0){
+        printf("Child process.\n");
+        printf("child PID:%d\n",getpid());
+        exit(1);
+}
+else{
+        printf("Parent process.\n");
+        printf("parent PID:%d\n",getpid());
+        printf("Child from Parent pid:%d\n",pid);
+
+}
+}
+```
+## 4.Write a C program to create multiple child processes using fork() and display their PID
+```
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+int main(){
+        int n;
+        printf("Enter number of child process");
+        scanf("%d",&n);
+  for(int i=0;i<n;i++){
+          int pid=fork();
+  if(pid<0){
+          printf("Fork failed");
+  }
+  else if(pid==0){
+          printf("Child Process\n");
+          printf("PID of child process:%d\n",getpid());
+          exit(1);
+  }
+  else{
+  }
+  }
+  printf("Parent process PID:%d\n",getpid());
+}
+output
+Enter number of child process3
+Child Process
+PID of child process:3725
+Parent process PID:3724
+Child Process
+PID of child process:3726
+Child Process
+PID of child process:3727
+```
+
+
+
