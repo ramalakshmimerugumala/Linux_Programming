@@ -226,8 +226,62 @@ setgid() – Set Group ID
 Syntax:
 int setgid(gid_t gid);
 ```
-## 19.
-
+## 19.Explain the concept of process groups and their significance in UNIX-like operating systems.
+```
+A process group is a set of processes that are related to each other and work together as a single unit
+The significance of process groups is that they make it easy to control, signal, and manage multiple related processes together — especially for job control in terminals.
+```
+## 20.Write a C program to demonstrate the use of the waitpid() function for process synchronization
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+int main(){
+pid_t pid1,pid2;
+int status;
+pid1=fork();
+if(pid1<0){
+        perror("Failure");
+}
+if(pid1==0){
+        printf("Child process 1.\n");
+        printf("Child 1 PID=%d\n",getpid());
+        sleep(2);
+        printf("child 1 Executed");
+  exit(2);
+}
+pid2=fork();
+if(pid2<0){
+        perror("Falure");
+}
+if(pid2==0){
+        printf("Child process 2\n");
+        printf("Child 2 PID=%d\n",getpid());
+       sleep(1);
+      printf("Child 2 is executed..");
+       exit(1);
+}
+printf("parent process waiting for second child.\n");
+waitpid(pid2,&status,0);
+printf("Child2 completed its execution with the Exit status=%d\n",WEXITSTATUS(status));
+printf("Parent is waiting for first child.\n");
+waitpid(pid1,&status,0);
+printf("Child1 completes its execution with the Exit stattus=%d\n",WEXITSTATUS(status));
+printf("Child 1 completed its execution\n");
+}
+output
+Child process 1.
+Child 1 PID=7806
+parent process waiting for second child.
+Child process 2
+Child 2 PID=7807
+Child 2 is executed..Child2 completed its execution with the Exit status=1
+Parent is waiting for first child.
+child 1 ExecutedChild1 completes its execution with the Exit stattus=2
+Child 1 completed its execution
+```
 
 
 
