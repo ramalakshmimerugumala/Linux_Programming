@@ -282,9 +282,25 @@ Parent is waiting for first child.
 child 1 ExecutedChild1 completes its execution with the Exit stattus=2
 Child 1 completed its execution
 ```
-
-
-
-
-
+## 21.Discuss the role of the execle() function in the exec() family of calls.
+```
+The execle() system call loads and executes a new program in place of the current running process.
+Once it executes successfully, the old program is completely replaced by the new one — only the process ID (PID) remains the same.
+```
+## 22.Describe the purpose of the nice() system call in process scheduling
+```
+By using the nice() system call, we can change the priority of a process.
+Higher nice value → Lower priority (process runs more slowly or “nicely”)
+Lower nice value → Higher priority (process runs faster or gets more CPU time)
+The range of nice values is:
+ -20 to +19
+-20 → Highest priority (most aggressive, gets more CPU time)
++19 → Lowest priority (most polite, gets less CPU time)
+Syntax:
+int nice(int inc);
+inc → The increment value added to the process’s current nice value.
+A higher nice value → process runs more politely (lower priority).
+A lower nice value → process runs less politely (higher priority).
+```
+## 23.
 
