@@ -42,5 +42,21 @@ close(fd);
 return 0;
 }
 ```
-## 3.
+## 3.Copy
+```
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+int main(){
+char buf[100];
+int srcfd,destfd;
+int number;
+srcfd=open("file.txt",O_RDONLY);
+destfd=open("file2.txt",O_WRONLY|O_CREAT,0640);
+while((number=read(srcfd,buf,100))>0){
+                write(destfd,buf,number);
+}
+}
+```
+## 4.
 
