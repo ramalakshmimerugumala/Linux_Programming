@@ -58,5 +58,20 @@ while((number=read(srcfd,buf,100))>0){
 }
 }
 ```
-## 4.
+## 4. Copying one file to another by using command line argument
+```
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+int main(int argc,char *argv[]){
+        char buf[100];
+        int srcfd,destfd,number;
+ srcfd=open(argv[1],O_RDONLY);
+ destfd=open(argv[2],O_WRONLY);
+ while((number=read(srcfd,buf,100))>0){
+         write(destfd,buf,number);
+ }
+}
+```
+## 
 
