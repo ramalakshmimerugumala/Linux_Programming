@@ -73,5 +73,21 @@ int main(int argc,char *argv[]){
  }
 }
 ```
-## 
+## 5.Printing the size of the file
+```
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+int main(){
+ int fd;
+ struct stat buf;
+ fd=open("file.txt",O_RDWR);
+ fstat(fd,&buf);
+ printf("%ld",buf.st_size);
+ close(fd);
+}
+```
+## 6.
 
