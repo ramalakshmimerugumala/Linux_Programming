@@ -376,7 +376,7 @@ Tue Oct 28 11:42:59 AM IST 2025
 Displaying the current logged-in 
 ramalakshmi
 ```
-## Explain the concept of process states in UNIX-like operating systems
+## 25 Explain the concept of process states in UNIX-like operating systems
 ```
 In UNIX-like systems, a process goes through several states during its lifetime. These states describe the current condition of the process.
 1. New
@@ -399,3 +399,86 @@ All resources are released, and the process is removed from the system.
 The process has finished execution, but its parent process has not yet collected its exit status using wait().
 It remains in the process table until the parent reads the exit status
 ```
+## 26. Describe the purpose of the chroot() system call and provide an example.agement
+```
+chroot is used to change the root directory of current process and its child process.
+After this, the process and its children cannot access files outside the new root, making it useful for security isolation or creating sandbox environments.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+int main(){
+        if(chroot("/home/ramalakshmi/linux")==0){
+                printf("Changed root directoty successfully..");
+        }
+        else{
+                perror("Failed");
+        }
+}
+```
+## 27.Write a C program to create a process using fork() and pass arguments to the child process 
+```
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
+int main(int argc,char *argv[]){
+        pid_t pid;
+        pid=fork();
+        if(pid<0){
+                printf("Fork failed");
+        }
+        else if(pid==0){
+                printf("Child process.\n");
+                printf("PID of cild process=%d\n",getpid());
+                printf("Arguments received by child..\n");
+                for(int i=1;i<argc;i++){
+                        printf("%s",argv[i]);
+                }
+ }
+        else{
+                printf("Parent process.\n");
+                printf("Parent process PID=%d\n",getpid());
+        }
+}
+output
+ramalakshmi@ramalakshmi-VirtualBox:~/linux/processmanagement$ ./a.out hi hello how are u 
+Parent process.
+Parent process PID=6575
+Child process.
+PID of cild process=6576
+Arguments received by child..
+hihellohowareu
+```
+## 28 Explain the significance of process identifiers (PIDs) in process management
+```
+A Process Identifier (PID) is a unique number assigned by the operating system to every running process.
+It helps the OS and users to identify, manage, and control individual processes.
+```
+## 29.Discuss the concept of orphan processes and how they are handled in UNIX-like operating systems
+```
+In an orphan process, the parent process terminates first while the child process is still running.
+When this happens, the child process is adopted by the first process, known as the init process, whose PID is 1.
+The init process becomes the new parent of the orphan process and takes care of it until it finishes execution
+```
+## 30. Describe the concept of process priority and how it is managed in operating systems
+```
+Process priority decides which process gets CPU time first. Every process is assigned a priority value, and the CPU scheduler uses it to determine the order of execution..
+How It Is Managed
+In UNIX/Linux, process priority is managed using the nice value.
+The nice value ranges from –20 to +19:
+Lower nice value (–20) → Higher priority (process runs first).
+Higher nice value (+19) → Lower priority (process runs later).
+nice → set priority when starting a process.
+renice → change priority of a running process.
+```
+## 31.Explain the purpose of the fork() system call in creating copy-on-write (COW) processes
+```
+When a new process is created using the fork() system call, both the parent and the child initially share the same memory pages — this is known as Copy-on-Write (COW).
+They share the same pages as long as they perform only read operations.
+When either process performs a write operation, the operating system creates a separate copy of the page for that process, ensuring data independence and efficient memory usage
+```
+## 32.
+
+
