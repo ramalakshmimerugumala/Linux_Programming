@@ -302,5 +302,100 @@ inc → The increment value added to the process’s current nice value.
 A higher nice value → process runs more politely (lower priority).
 A lower nice value → process runs less politely (higher priority).
 ```
-## 23.
+## 23.Write a program in C to create a daemon process
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+int main(){
+        pid_t pid;
+        pid=fork();
+  if(pid<0){
+          printf("Failure");
+          exit(1);
+  }
+  if(pid>0){
+          printf("Parent process :%d\n",getpid());
+          exit(2);
+  }
+   if(setsid()<0){
+          exit(1);
+  }
+  chdir("/");
+  umask(0);
+  close(STDIN_FILENO);
+  close(STDOUT_FILENO);
+  close(STDERR_FILENO);
+  while(1){
+          sleep(5);
+  }
+  return 0;
+}
+output
+Parent process :4255
+to see the demon process in background--
+ps -ef |grep ./a.out
+ramalak+    4215    2142  0 11:12 pts/0    00:00:00 ./a.out
+ramalak+    4228    2142  0 11:14 pts/0    00:00:00 ./a.out
+ramalak+    4256    2142  0 11:16 ?        00:00:00 ./a.out
+ramalak+    4270    3542  0 11:19 pts/0    00:00:00 grep --color=auto ./a.out
+## to kill the demon process
+pkill a.out
+```
+## 24.Write a C program to demonstrate the use of the system() function for executing shell commands 
+```
+The system() function in C is used to execute Linux or shell commands directly through a C program.
 
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+int main(){
+        printf("Demonistrate the use of system function\n");
+        printf("Listing all the files\n");
+        system("ls");
+        printf("Displaying the current working directory\n");
+        system("pwd");
+        printf("Showing current date and time\n");
+        system("date");
+        printf("Displaying the current logged-in \n");
+        system("whoami");
+}
+output
+Demonistrate the use of system function
+Listing all the files
+a.out	  execv    multiple_child.c	 sample       waitpid.c
+demon.c   execv.c  multiple_child_PID.c  sample.c     zombie.c
+execel.c  fork.c   orphan.c		 systemfun.c
+Displaying the current working directory
+/home/ramalakshmi/linux/processmanagement
+Showing current date and time
+Tue Oct 28 11:42:59 AM IST 2025
+Displaying the current logged-in 
+ramalakshmi
+```
+## Explain the concept of process states in UNIX-like operating systems
+```
+In UNIX-like systems, a process goes through several states during its lifetime. These states describe the current condition of the process.
+1. New
+The process is being created.
+Memory is allocated in user space, and a Process Control Block (PCB) is initialized in kernel space.
+2. Ready
+The process is ready to run but waiting for CPU time.
+It is placed in the ready queue by the scheduler.
+When the CPU becomes available, it moves to the running state.
+3. Running
+The process is currently being executed by the CPU.
+Instructions of the program are active.
+4. Blocked (Waiting)
+The process is waiting for an event (like I/O operation) to complete.
+It cannot continue until the required event occurs.
+5. Terminated (Exit)
+The process has finished its execution.
+All resources are released, and the process is removed from the system.
+6. Zombie
+The process has finished execution, but its parent process has not yet collected its exit status using wait().
+It remains in the process table until the parent reads the exit status
+```
