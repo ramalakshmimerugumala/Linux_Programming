@@ -499,5 +499,92 @@ int main(){
 ```
 ## 33.Write a C program to demonstrate the use of the execvpe() function
 ```
+```
+## 34. Explain the concept of process context switching and its impact on system performance
+```
+Context switching means the CPU stops executing the current process, saves its state, and loads the state of another process to share the CPU time among multiple processes.
+Context switching is mainly used in multitasking and time-sharing systems to make multiple processes appear to run simultaneously..
+```
+## 35.Discuss the role of the clone() system call in creating threads in Linux.
+```
+In Linux, threads are implemented using the clone() system call.
+By passing specific flags (like CLONE_VM, CLONE_FS, CLONE_FILES, CLONE_SIGHAND), the new task shares the same memory and resources with the calling process.
+This allows multiple threads to run in the same address space, making communication between them fast and efficient.
 
+The clone() system call is similar to fork() but more flexible.
+It is mainly used to create threads in Linux because it allows the new thread to share the same memory and resources with the parent process
+```
+## 36 Write a C program to create a process group and change its process group ID (PGID).
+```
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
+int main(){
+ pid_t pid;
+ pid=fork();
+ if(pid<0){
+         printf("Failure of fork");
+ }
+ if(pid==0){
+         printf("Child process..\n");
+         printf("Before changing the process group Id\n");
+         printf("Child process PID=%d\n,Group process(GPID)=%d\n",getpid(),getpgrp());
 
+ if(setpgid(0,0)==0){
+ printf("After changing the process Group id\n");
+         printf("Child PID=%d\n,Process Group Id=%d\n",getpid(),getpgrp());
+ }
+ else{
+    perror("setpgid failed");
+ }
+ }
+ else{
+         printf("Parent process\n");
+         printf("Parent Process PID=%d\n,Group ID=%d\n",getpid(),getpgrp());sleep(2);
+
+ }
+}
+output
+Parent process
+Child process..
+Before changing the process group Id
+Parent Process PID=9142
+,Group ID=9142
+Child process PID=9143
+,Group process(GPID)=9142
+After changing the process Group id
+Child PID=9143
+,Process Group Id=9143
+```
+## 37.Explain the difference between process creation using fork() and pthread_create().
+```
+Feature	                   fork()	                                                           pthread_create()
+Purpose	               Used to create a new process.	                               Used to create a new thread within the same process..
+Memory Space       The new process gets a separate copy of the parent’s memory      The new thread shares the same memory and resources with the parent thread
+                   (address space).
+
+Communication     Processes need inter-process communication (IPC) like pipes or    Threads can directly communicate since they share the same memory
+                  shared memory to exchange data.
+
+Execution          Parent and child run independently after creation                  Threads run concurrently within the same process
+
+Systemcall/Library    fork() is a system call provided by the OS kernel                  pthread_create() is a POSIX thread library function (user-level)
+
+Use Case                Used for process-based multitasking                             Used for thread-based multitasking
+```
+## 38.. Describe the role of the fork() system call in implementing the shell's job control
+```
+The fork() system call is used by the shell to create a new process for every command the user runs.
+This allows the shell to keep control over jobs — it can run them in background, stop, resume, or terminate them, while still accepting other commands.
+```
+## 39.Explain the purpose of the execlp() function and provide an example
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+int main(){
+char *argv[5];
+execlp("ls","ls","-l",NULL);
+}
+```
