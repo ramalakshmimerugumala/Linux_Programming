@@ -484,7 +484,20 @@ When either process performs a write operation, the operating system creates a s
 execvp() is used to replace the current program with a new program.
 If the given argument does not contain a slash (/), it searches for the executable file in the directories listed in the PATH environment variable.
 If the argument contains a slash (/), it is treated as a path, and execvp() directly tries to execute that file.
+
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+int main(){
+   char *argv[5];
+   argv[0]="ps";
+   argv[1]="-ef";
+   argv[2]=NULL;
+   execvp("ps",argv);
+}
 ```
-## 33.
+## 33.Write a C program to demonstrate the use of the execvpe() function
+```
 
 
