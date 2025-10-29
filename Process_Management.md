@@ -479,6 +479,12 @@ When a new process is created using the fork() system call, both the parent and 
 They share the same pages as long as they perform only read operations.
 When either process performs a write operation, the operating system creates a separate copy of the page for that process, ensuring data independence and efficient memory usage
 ```
-## 32.
+## 32.Discuss the role of the execvp() function in searching for executable files.
+```
+execvp() is used to replace the current program with a new program.
+If the given argument does not contain a slash (/), it searches for the executable file in the directories listed in the PATH environment variable.
+If the argument contains a slash (/), it is treated as a path, and execvp() directly tries to execute that file.
+```
+## 33.
 
 
