@@ -588,3 +588,12 @@ char *argv[5];
 execlp("ls","ls","-l",NULL);
 }
 ```
+## 40 Discuss the significance of the setpgid() system call in managing process groups
+```
+Setpgid() is a UNIX/Linux system call that allows a process to join or create a process group.
+Each process group is identified by a PGID (Process Group ID).
+int setpgid(pid_t pid, pid_t pgid);
+pid → PID of the target process
+pgid → New process group ID to assign
+```
+## 41 
