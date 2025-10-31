@@ -89,5 +89,77 @@ int main(){
  close(fd);
 }
 ```
-## 6.
+## 6.Write a C program to create a new text file and write "Hello, World!" to it?
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <string.h>
+#include <unistd.h>
+int main(){
+int fd;
+if(fd<0){
+        perror("Failure of opening the file..");
+}
+char buf[20]="HELLO WORLD!";
+fd=open("demo.txt",O_WRONLY|O_CREAT,0640);
+write(fd,buf,strlen(buf));
+close(fd);
+printf("Written Successfully..");
+}
+```
+## 7.Develop a C program to open an existing text file and display its contents?
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+int main(){
+int fd;
+int n;
+char buf[100];
+if(fd<0){
+        perror("Error in opening file..\n");
+}
+fd=open("demo.txt",O_RDONLY);
+while((n=read(fd,buf,100))>0){
+        printf("%s",buf);
+}
+close(fd);
+}
+```
+## 8.Implement a C program to create a new directory named "Test" in the current directory?
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+int main(){
+ int status;
+ status=mkdir("Test",0650);
+ if(status==0){
+         printf("Created successfully");
+ }
+ else{
+         perror("Failure");
+ }
+}
+```
+## 9.Write a C program to check if a file named "sample.txt" exists in the current directory?
+```
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
+int main(){
+   if(access("sample.txt",F_OK)==0){
+           printf("sample.txt is present in the current directory..");
+   }
+   else{
+      printf("It is not present in current directory.");
+   }
+}
+```
+## 10.
 
