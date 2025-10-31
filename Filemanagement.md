@@ -161,5 +161,41 @@ int main(){
    }
 }
 ```
-## 10.
+## 10.Develop a C program to rename a file from "oldname.txt" to "newname.txt"?
+```
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
+int main(){
+int status;
+int fd;
+fd=open("old.txt",O_CREAT,0640);
+status=rename("old.txt","new.txt");
+if(status==0){
+        printf("File name changed");
+}
+else{
+   perror("Error in replacing");
+}
+}
+```
+## 11 Implement a C program to delete a file named "delete_me.txt"?
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+int main(){
+ int sta;
+  sta=remove("del.txt");
+  if(sta==0){
+          printf("Deleted Succesfully");
+  }
+  else{
+          perror("Deleting file");
+  }
+}
+```
+## 12 
+```
 
