@@ -596,4 +596,91 @@ int setpgid(pid_t pid, pid_t pgid);
 pid → PID of the target process
 pgid → New process group ID to assign
 ```
-## 41 
+## 41 Explain the concept of process priority inheritance and its importance in real-time systems
+```
+In real-time systems, each process has a priority. Sometimes, a low-priority process may hold a resource (like a file or lock) that a high-priority process needs. The high-priority process has to wait — this is called priority inversion.
+To fix this, the system uses priority inheritance. The low-priority process temporarily gets the higher priority so it can finish quickly and release the resource. After that, it returns to its original priority.
+Importance:
+✅ Prevents priority inversion
+✅ Ensures real-time tasks finish on time
+✅ Improves system performance and reliability
+```
+## 42.Write a C program to create a child process using vfork() and demonstrate its usage
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+int main(){
+  pid_t pid;
+  pid=vfork();
+  if(pid<0){
+          printf("Vfork failure");
+          exit(1);
+  }
+   else if(pid==0){
+          printf("Child process PID=%d\n",getpid());
+          _exit(0);
+  }
+  else{
+          printf("Parent process PID=%d\n",getpid());
+         printf("Child process finishes its execution");
+  }
+}
+```
+## 43.Describe the role of the fork() system call in copy-on-write (COW) mechanism and its benefits
+```
+The fork() system call is used to create a new process.
+This new process is called the child process, and the process that created it is the parent process.
+
+Normally, the child should get a copy of the parent’s memory, but copying everything takes time and memory.
+
+Copy-On-Write (COW):
+To save time, both parent and child share the same memory at first.
+But they cannot change it (it’s read-only).
+If one of them tries to modify something, then the system creates a new copy only for that process.
+```
+## 44.Explain the concept of process scheduling policies such as FIFO, Round Robin, and Priority scheduling
+```
+When many processes are waiting to use the CPU, the operating system decides which one to run first. This decision is made using scheduling policies
+1.FIFO (First In, First Out)
+The process that comes first runs first.
+Once it starts, it runs until it finishes.
+Example:
+If processes come in order P1, P2, P3 → they run in the same order.
+✅ Simple and easy
+❌ Not fair for long-running processes (others must wait)
+2.Round Robin (RR):
+Each process gets a small time slice (like 1 second).
+If it doesn’t finish, it goes to the end of the queue.
+Then the next process gets its turn.
+Example:
+If you have P1, P2, P3 →
+P1 runs for 1 sec → P2 runs → P3 runs → then again P1 (if not finished).
+✅ Fair for all processes
+✅ Good for multitasking systems
+❌ Frequent switching can slow down performance
+3. Priority Scheduling
+Each process has a priority number.
+The higher priority process runs first.
+Example:
+P1 (priority 2), P2 (priority 5), P3 (priority 1)
+→ P2 runs first because 5 is highest.
+✅ Used in real-time systems
+❌ Low-priority processes may starve (never get CPU)
+```
+## 45 4. Discuss the significance of the execve() function in process creation and execution.
+```
+The execve() function is used to run a new program inside the current process.
+It replaces the current process’s memory with the new program
+
+#include <stdio.h>
+#include <unistd.h>
+int main() {
+    char *args[] = {"/bin/ls", "-l", NULL};
+    execve("/bin/ls", args, NULL);
+    perror("execve failed");
+    return 0;
+}
+```
+## 46.
