@@ -718,5 +718,112 @@ Frequent swapping can cause thrashing (system spends most time moving processes 
 ```
 ## 48 Discuss the difference between the fork() and pthread_create() functions in terms of process/thread creation
 ```
++------------------------------+-----------------------------------------------+----------------------------------------------+
+| Feature                      | fork()                                        | pthread_create()                             |
++------------------------------+-----------------------------------------------+----------------------------------------------+
+| What it creates              | A new **process** (child process)             | A new **thread** within the same process     |
++------------------------------+-----------------------------------------------+----------------------------------------------+
+| Memory space                 | Child has a **separate copy** of parent’s memory | Threads **share the same memory space**     |
++------------------------------+-----------------------------------------------+----------------------------------------------+
+| Communication                | Needs **IPC mechanisms** (pipe, shared memory) | Threads **communicate directly** via shared data |
++------------------------------+-----------------------------------------------+----------------------------------------------+
+| Resource usage               | **Heavyweight**, uses more system resources    | **Lightweight**, uses fewer resources        |
++------------------------------+-----------------------------------------------+----------------------------------------------+
+| Execution speed              | **Slower**, new process setup required         | **Faster**, runs in same address space       |
++------------------------------+-----------------------------------------------+----------------------------------------------+
+| Dependency                   | Child process runs **independently** of parent | Threads are **dependent** on each other      |
++------------------------------+-----------------------------------------------+----------------------------------------------+
+| Data sharing                 | Data **cannot be shared directly**             | Threads **share data and variables** easily  |
++------------------------------+-----------------------------------------------+----------------------------------------------+
+| Header file required          | Declared in **<unistd.h>**                    | Declared in **<pthread.h>**                  |
++------------------------------+-----------------------------------------------+----------------------------------------------+
+| Typical use case             | Used for **creating new processes** (e.g., shells) | Used for **multi-threading** in same process |
++------------------------------+-----------------------------------------------+----------------------------------------------+
+| Example of ID returned        | Returns **process ID (PID)**                  | Returns **thread ID (pthread_t)**            |
++------------------------------+-----------------------------------------------+----------------------------------------------+
+```
+## 49.Describe the purpose of the prctl() system call in process management.
+```
+prctl() stands for Process Control.
+It is a Linux-specific system call used to control and modify certain attributes or behaviors of a process at runtime.
+It allows a process to set or get various control parameters related to itself or sometimes its children.
+
+#include <stdio.h>
+#include <sys/prctl.h>
+#include <string.h>
+int main() {
+    // Set the process name
+    prctl(PR_SET_NAME, "MyProcess", 0, 0, 0);
+    // Get the process name
+    char name[16];
+    prctl(PR_GET_NAME, name, 0, 0, 0);
+    printf("Process name: %s\n", name);
+    return 0;
+}
+```
+## 50.Explain the concept of process preemption and its impact on system responsiveness
+```
+When Process A is running and a new process B arrives with a higher priority,
+the operating system will preempt (pause) Process A and switch the CPU to run Process B immediately.
+Once Process B finishes its execution, the CPU will resume Process A from the exact point where it was stopped earlier.
+Impact on System Responsiveness (Short Version)
+Improves Responsiveness:
+CPU quickly switches to high-priority tasks, making the system react faster to user actions.
+Better Multitasking:
+Allows many programs to run smoothly by sharing CPU time.
+Fair CPU Use:
+Ensures all processes get a fair share of CPU time.
+Small Overhead:
+Frequent switching causes slight delay, but overall system stays responsive.
+```
+## 51.Discuss the role of the exec functions in handling file descriptors during process execution
+```
+exec() keeps open files and pipes active unless they are marked to close.
+This allows smooth communication between old and new programs.
+All open file descriptors (like files, pipes, standard input/output) stay open after exec() by default.
+This helps the new program continue using the same files or communication channels.
+If a file descriptor has the close-on-exec flag (FD_CLOEXEC), it will be closed automatically when exec() runs.
+```
+## 52.Explain the significance of process priorities and how they affect scheduling decisions
+```
+Process priority decides which process runs first.
+Higher priority = runs sooner.
+Lower priority = waits longer.
+This ensures the CPU handles important tasks quickly and keeps the system responsive.
+```
+## 53.Describe the process of process termination and the various ways it can occur
+```
+Process Termination
+It means ending a process when its work is done or something goes wrong.
+Ways a process can end:
+Normal termination – finishes work and exits normally.
+Abnormal termination – ends due to an error (like divide by zero).
+Killed by another process – stopped using commands like kill or Ctrl + C.
+Parent ends – if parent stops, child may also end.
+Zombie/Orphan – special cases when parent or child ends first.
+```
+## 54. Discuss the role of the exit status in process termination and how it can be retrieved by the parent process
+```
+When a process finishes, it returns an exit status (exit code) to the operating system.
+This exit status tells whether the process ended normally or with an error.
+The parent process uses the wait() or waitpid() system call to get the child’s exit status.
+The OS stores the exit status temporarily until the parent collects it..
+Example:
+pid_t pid = fork();
+if(pid == 0)
+    exit(5);        // child process ends with status 5
+else {
+    int status;
+    wait(&status);  // parent waits for child
+    printf("%d", WEXITSTATUS(status)); // prints 5
+}
+```
+## 55.Write a C program to demonstrate process synchronization using the fork() and wait() system calls
+Synchronization = orderly execution of processes to avoid conflicts and maintain correct results.
+In fork() and wait():
+The child process runs first.
+The parent process uses wait() to synchronize — it waits until the child is done.
+This ensures proper order of execution..
+
 
 
