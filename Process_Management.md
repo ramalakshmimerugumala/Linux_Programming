@@ -683,4 +683,40 @@ int main() {
     return 0;
 }
 ```
-## 46.
+## 46.Write a program in C to demonstrate the use of the nice() system call for adjusting process priority
+```
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/resource.h>
+int main(){
+int old=getpriority(PRIO_PROCESS,0);
+printf("Old niece value=%d\n",old);
+nice(5);
+int new=getpriority(PRIO_PROCESS,0);
+printf("new niece value=%d",new);
+}
+output
+Old niece value=0
+new niece value=5
+```
+## 47.Explain the concept of process swapping and its role in memory management.
+```
+When many processes are running, RAM might become full.
+The operating system chooses one process that is not currently needed.
+That process is moved (swapped out) to the hard disk (swap area).
+When that process is needed again, it is brought back (swapped in) to RAM.
+This helps multiple processes share limited memory efficiently..
+Role in Memory Management
+Swapping helps the operating system manage memory when there are more processes than can fit in RAM.
+Functions:
+✅ Allows more processes to run simultaneously
+✅ Makes efficient use of memory
+✅ Helps in multiprogramming (running many programs at once)
+Disadvantages:
+Slower performance, because swapping involves disk I/O (reading/writing to disk is slower than RAM).
+Frequent swapping can cause thrashing (system spends most time moving processes in/out of memory)
+```
+## 48 Discuss the difference between the fork() and pthread_create() functions in terms of process/thread creation
+```
+
+
