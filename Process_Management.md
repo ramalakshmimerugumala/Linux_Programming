@@ -819,11 +819,36 @@ else {
 }
 ```
 ## 55.Write a C program to demonstrate process synchronization using the fork() and wait() system calls
+```
 Synchronization = orderly execution of processes to avoid conflicts and maintain correct results.
 In fork() and wait():
 The child process runs first.
 The parent process uses wait() to synchronize — it waits until the child is done.
 This ensures proper order of execution..
 
-
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+int main(){
+    pid_t pid;
+    pid=fork();
+    if(pid<0){
+        printf("Error in fork");
+    }
+    if(pid==0){
+        printf("Child Process..\n");
+        sleep(2);
+        exit(5);
+        }
+        else{
+            int status;
+            printf("Parent Process...\n");
+            wait(&status);
+printf("Child Exited with the status =%d\n",WEXITSTATUS(status));   
+        }
+}
+```
+## 56
 
