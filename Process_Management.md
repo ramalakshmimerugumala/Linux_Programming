@@ -850,5 +850,167 @@ printf("Child Exited with the status =%d\n",WEXITSTATUS(status));
         }
 }
 ```
-## 56
-
+## 56 Explain the concept of process suspension and resumption using signals
+```
+In an operating system, process suspension means temporarily stopping a process’s execution.
+Resumption means continuing that stopped process again.
+This can be done using signals — special messages sent by the OS or another process.
+```
+## 57.Discuss the role of process scheduling algorithms in determining the order of execution among processes
+```
+Main Role of Scheduling Algorithms
+Determine Execution Order
+Decide which process gets the CPU first, next, and so on.
+Ensures that every process gets a fair share of CPU time.
+Maximize CPU Utilization
+Keeps the CPU busy as much as possible (no idle time).
+Reduce Waiting Time & Turnaround Time
+Chooses an order that minimizes how long processes wait in the queue.
+Improve System Responsiveness
+For interactive systems, ensures that short or urgent tasks run quickly.
+Ensure Fairness
+Makes sure no process is starved (ignored for too long).
+```
+## 58.Explain the concept of process migration and its relevance in distributed systems.
+```
+Process migration means moving a running process from one machine to another in a network (distributed system).
+Example:
+If Server A is overloaded,
+one of its running processes can be moved to Server B,
+so it can keep running there without restarting.
+Why It’s Useful:
+Balances the workload between servers.
+Improves performance.
+Prevents system failure due to overload.
+Makes better use of resources.
+```
+## 59.Describe the role of process identifiers (PIDs) in process management and their uniqueness within the system
+```
+A Process Identifier (PID) is a unique number that the operating system assigns to every process running in the system.
+It acts like an ID card for each process.
+Each process has a unique PID that helps the OS identify and manage it. Using the PID, system calls like kill() or wait() can control specific processes. PIDs also connect parent and child processes (getppid() gives the parent’s ID). The OS uses PIDs to handle resources like memory or files. Commands like ps, top, and kill use PIDs to monitor and manage running processes
+```
+## 60.3. Explain the concept of process tracing and its importance in debugging and monitoring
+```
+Process tracing means watching how a process runs — step by step — to see what system calls it makes and what data it uses. It helps developers understand program behavior, find bugs, and fix errors. Tools like strace and ptrace() in Linux are used for tracing. It’s important for debugging, performance checking, and ensuring a process works correctly..
+```
+## 61.Describe the concept of process control blocks (PCBs) and their role in process management
+```
+A Process Control Block (PCB) is a data structure used by the operating system to store all information about a process.It helps the OS keep track of each process’s state and manage switching between processes.
+All important information needed by the OS to run, pause, resume, or terminate a process...
+A Process Control Block (PCB) typically contains the following key elements:
+PID (Process ID): Unique identifier for the process.
+Process State: (Running, Ready, Waiting, etc.)
+Program Counter: Points to the next instruction to execute.
+CPU Registers: Stores current register values.
+Memory Management Info: Includes page table or segment table.
+File Descriptor Table (FD table): Tracks files opened by the process.
+Signal Disposition Table: Defines how the process handles signals (e.g., ignore, handle, terminate).
+Accounting Info: CPU time, process priority, etc
+```
+## 62.Write a C program to demonstrate the use of the prctl() system call to change process attributes..
+```
+int prctl(int option, unsigned long arg2, unsigned long arg3,
+          unsigned long arg4, unsigned long arg5);
+That means prctl() can take up to 5 arguments —
+the first one (option) tells what action to perform,
+and the next four are optional parameters, whose meanings depend on the option you use.
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/prctl.h>
+int main(){
+ char name[25];
+ prctl(PR_SET_NAME,"NewProcess",0,0,0);
+ prctl(PR_GET_NAME,name,0,0,0);
+ printf("Process name=%s\n",name);
+ printf("Process PID=%d\n",getpid());
+}
+```
+## 63.Explain the concept of process scheduling classes and their significance in real-time operating system
+```
+A scheduling class is a category of processes that share the same scheduling policy.
+Each class has its own rules to decide which process gets the CPU next..
+Types of Scheduling Classes:
+Normal (Time-Sharing) Class:
+Used for regular user processes.
+Tries to give fair CPU time to all.
+Example: Round Robin, Priority Scheduling.
+Real-Time Class:
+Used for tasks that must finish on time.
+Higher priority than normal processes.
+Example: SCHED_FIFO, SCHED_RR in Linux.
+```
+## 64.Discuss the role of the vfork() system call in process creation and its differences from fork()
+```
++------------------------------+-----------------------------------------------+-----------------------------------------------+
+| Feature                      | fork()                                        | vfork()                                       |
++------------------------------+-----------------------------------------------+-----------------------------------------------+
+| What it creates              | A new **process** (child process)             | A new **process**, but shares memory with parent |
++------------------------------+-----------------------------------------------+-----------------------------------------------+
+| Memory space                 | Child gets a **copy** of parent’s memory       | Child **shares** parent’s memory temporarily   |
++------------------------------+-----------------------------------------------+-----------------------------------------------+
+| Parent execution             | Parent and child run **independently**        | **Parent is suspended** until child calls exec() or _exit() |
++------------------------------+-----------------------------------------------+-----------------------------------------------+
+| Speed                        | **Slower**, copies entire memory space         | **Faster**, no memory copy                    |
++------------------------------+-----------------------------------------------+-----------------------------------------------+
+| Memory efficiency            | **Consumes more memory**                      | **Uses less memory** (shared temporarily)     |
++------------------------------+-----------------------------------------------+-----------------------------------------------+
+| Use case                     | For general process creation                  | When child **immediately calls exec() or _exit()** |
++------------------------------+-----------------------------------------------+-----------------------------------------------+
+| Data sharing                 | Data **not shared** between parent and child  | Data **shared**, so changes affect parent     |
++------------------------------+-----------------------------------------------+-----------------------------------------------+
+| Header file required          | Declared in **<unistd.h>**                   | Declared in **<unistd.h>**                    |
++------------------------------+-----------------------------------------------+-----------------------------------------------+
+| Example of ID returned        | Returns **process ID (PID)**                 | Returns **process ID (PID)**                  |
++------------------------------+-----------------------------------------------+-----------------------------------------------+
+| Dependency                   | Parent and child are **independent**          | Child must call **exec() or _exit()** before parent resumes |
++------------------------------+-----------------------------------------------+-----------------------------------------------+
+````
+## 65 Describe the purpose of the sigaction() system call in handling signals in processes
+```
+sigaction() is used to change or modify signal behavior.
+It gives more control than the old signal() function.
+It is used for safe and reliable signal handling in processes.
+```
+## 66 Discuss the role of the sigprocmask() system call in managing signal masks for processes
+```
+The sigprocmask() system call is used to block or unblock signals in a process by changing its signal mask.
+Block signals → Temporarily stop certain signals from interrupting the process.
+Unblock signals → Allow blocked signals to be delivered again.
+Check current mask → Find which signals are currently blocked
+int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
+how → Tells what action to perform (SIG_BLOCK, SIG_UNBLOCK, or SIG_SETMASK).
+set → The new set of signals to block/unblock.
+oldset → Saves the previous mask (optional).
+```
+## 67 Describe the purpose of the setrlimit() system call in setting resource limits for processes
+```
+setrlimit() sets resource usage limits for a process.
+Prevents any process from overusing system resources.
+Helps in system stability and security.
+Types of Limits:
+Soft limit: The current limit the process can use (can be changed anytime).
+Hard limit: The maximum limit that even the process owner cannot exceed easily.
+int setrlimit(int resource, const struct rlimit *rlim);
+resource → Type of resource (like CPU time, file size, etc.).
+rlim → A structure that defines the soft and hard limits.
+```
+## 68.Discuss the concept of process groups and their importance in job control and signal propagation
+```
+A process group is a collection of one or more processes that are related and can be controlled together.
+Every process in Linux belongs to exactly one process group, identified by a Process Group ID (PGID).
+Process groups are mainly used for:
+Job control (in shells like bash).
+Signal propagation (sending signals to multiple related processes
+1.Job Control
+When you run a command in a terminal (like ls | grep txt), several processes are created.
+These processes are grouped into one process group.
+The shell can then pause, resume, or terminate the entire group at once (for example, using Ctrl+Z to stop or fg to continue).
+This makes background and foreground job control possible.
+2️ Signal Propagation
+When a signal (like SIGINT from Ctrl+C) is sent to a process group,
+all processes in that group receive the same signal.
+This ensures that related processes (like a pipeline) can be stopped or killed together.
+```
+## 69.
