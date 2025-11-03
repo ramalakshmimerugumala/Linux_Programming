@@ -206,5 +206,16 @@ system("mv /home/ramalakshmi/linux/filemanagement/changedirectory.c /home/ramala
 return 0;
 }
 ```
-## 8.
-
+## 8.Implement a C program to list all files in the current directory?
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+int main(){
+ char command[100];
+ printf("Enter a command");
+  scanf("%99s",command);
+  system(command);
+}
+```
+## 9
