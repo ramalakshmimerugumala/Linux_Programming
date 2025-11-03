@@ -89,7 +89,7 @@ int main(){
  close(fd);
 }
 ```
-## 6.Write a C program to create a new text file and write "Hello, World!" to it?
+## 1.Write a C program to create a new text file and write "Hello, World!" to it?
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -108,7 +108,7 @@ close(fd);
 printf("Written Successfully..");
 }
 ```
-## 7.Develop a C program to open an existing text file and display its contents?
+## 2.Develop a C program to open an existing text file and display its contents?
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -128,7 +128,7 @@ while((n=read(fd,buf,100))>0){
 close(fd);
 }
 ```
-## 8.Implement a C program to create a new directory named "Test" in the current directory?
+## 3.Implement a C program to create a new directory named "Test" in the current directory?
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -146,7 +146,7 @@ int main(){
  }
 }
 ```
-## 9.Write a C program to check if a file named "sample.txt" exists in the current directory?
+## 4.Write a C program to check if a file named "sample.txt" exists in the current directory?
 ```
 #include <stdio.h>
 #include <unistd.h>
@@ -161,7 +161,7 @@ int main(){
    }
 }
 ```
-## 10.Develop a C program to rename a file from "oldname.txt" to "newname.txt"?
+## 5.Develop a C program to rename a file from "oldname.txt" to "newname.txt"?
 ```
 #include <stdio.h>
 #include <unistd.h>
@@ -180,7 +180,7 @@ else{
 }
 }
 ```
-## 11 Implement a C program to delete a file named "delete_me.txt"?
+## 6. Implement a C program to delete a file named "delete_me.txt"?
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -196,6 +196,15 @@ int main(){
   }
 }
 ```
-## 12 
+## 7. Develop a C program to move a file from one directory to another?
 ```
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+int main(){
+system("mv /home/ramalakshmi/linux/filemanagement/changedirectory.c /home/ramalakshmi/linux/processmanagement");
+return 0;
+}
+```
+## 8.
 
