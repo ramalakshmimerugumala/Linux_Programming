@@ -1013,4 +1013,18 @@ When a signal (like SIGINT from Ctrl+C) is sent to a process group,
 all processes in that group receive the same signal.
 This ensures that related processes (like a pipeline) can be stopped or killed together.
 ```
-## 69.
+## 69.Explain the role of the prlimit() system call in setting resource limits for processes.
+```
+prlimit() is used to get or set resource limits for any process.
+ It combines both getrlimit() and setrlimit() in one call.
+ Helps the OS control resource usage and prevent overload.
+ Useful for monitoring and managing running processes safely.
+int prlimit(pid_t pid, int resource,
+            const struct rlimit *new_limit,
+            struct rlimit *old_limit);
+pid → Process ID (use 0 for the current process).
+resource → Type of resource (e.g., RLIMIT_CPU, RLIMIT_FSIZE, etc.).
+new_limit → New limits to set (or NULL if not changing).
+old_limit → Gets the old limits (or NULL if not needed
+```
+## 70.
