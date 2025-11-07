@@ -1175,31 +1175,31 @@ top = video of processes (dynamic)
 ```
 ## 80.what are the types of processes we have explain each process breifly?
 ```
-System Process
+1️⃣.System Process
 Meaning: Processes started automatically by the operating system when the system boots up.
 They manage hardware and background system tasks.
 Example:
 systemd or init → starts all other processes after boot.
 kthreadd → manages kernel threads
-User Process
+2️⃣.User Process
 Meaning: Processes started by you (the user) — like opening apps or running programs.
 Example:
 Opening Chrome → starts a user process.
 Running java HelloWorld → creates a user process.
 Think of it like: The tasks you do — open browser, editor, etc.
-Foreground Process
+3️⃣.Foreground Process
 Meaning: Process that runs in front of you — it takes input from keyboard and shows output on screen.
 Example:
 Typing cat file.txt → it shows file content right in your terminal.
 Running python script.py → runs in foreground and waits for input/output.
 Think of it like: You’re talking directly to the process.
-Background Process
+4️⃣.Background Process
 Meaning: Process that runs behind the scenes — it doesn’t need your input.
 Example:
 ./long_task.sh &
 → Runs in background. You can still type other commands while it runs.
 Think of it like: You’re cooking while your washing machine works automatically in background.
-Daemon Process
+5️⃣.Daemon Process
 Meaning: A special background process that runs continuously to provide system services.
 It starts at boot time and has no terminal connection.
 Example:
@@ -1207,3 +1207,22 @@ sshd → handles login/logout through SSH.
 crond → runs scheduled tasks like backups.
 cupsd → manages printer services.
 Think of it like: A security guard — always running, waiting to serve when needed.
+6️⃣ Orphan Process
+Meaning: A child process whose parent process ended before the child finished.
+The init/systemd process adopts it.
+Example:
+Suppose you run a script that starts another process and then the script ends —
+the second process becomes orphan but keeps running.
+Think of it like: A child whose parent left — OS adopts it so it’s not lost.
+7️⃣ Zombie Process
+Meaning: Process that has finished execution but its parent hasn’t read its exit status yet.
+It stays as a small entry in the process table.
+Example:
+You run a program, it ends, but the parent didn’t call wait() — it becomes a zombie.
+In ps output, you’ll see <defunct>.
+Think of it like: A ghost — dead, but still listed until it’s properly removed.
+```
+## 81.In parent process can you access to the exit code of return value of child process (or) in parent process how do you block to get the id of child?
+```
+Yes!
+The parent process can access the exit status (return value) of its child process using the wait() or waitpid() system call.
