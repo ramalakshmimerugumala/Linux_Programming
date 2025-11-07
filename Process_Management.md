@@ -1226,10 +1226,10 @@ Think of it like: A ghost — dead, but still listed until it’s properly remov
 ```
 Yes!
 The parent process can access the exit status (return value) of its child process using the wait() or waitpid() system call.
-Function	                       Purpose	                       Returns
-wait(&status)	         Waits for any child to finish	   Returns PID of child
-waitpid(pid, &status, 0)	Waits for a specific child	             Returns PID of that child
-WEXITSTATUS(status)	Gets exit code from child	               Exit value (0–255)
+Function	                        Purpose	                       Returns
+wait(&status)	            Waits for any child to finish	     Returns PID of child
+waitpid(pid, &status, 0)	   Waits for a specific child	        Returns PID of that child
+WEXITSTATUS(status)	    Gets exit code from child	        Exit value (0–255)
 ```
 ## 82.define system call name some blocking system calls?
 ```
@@ -1246,4 +1246,77 @@ A blocking system call is one that makes the process wait until the requested op
 | `sleep()`             | Suspends process for a specific time       | Blocks until the timer expires      |
 | `select()` / `poll()` | Waits for I/O on multiple file descriptors | Blocks until an event occurs        |
 ```
-
+## 83.why do not we run program with in harddisk (or) why do we copy program to RAM for execution?
+```
+RAM is much faster than a hard disk.
+A hard disk accesses data block by block, while RAM allows direct access to data byte by byte (or word by word).
+Hence, programs are copied to RAM for faster and efficient execution.
+| Feature           | Hard Disk         | RAM                        |
+| ----------------- | ----------------- | -------------------------- |
+| Access Type       | Block-by-block    | Byte/word-by-word          |
+| Access Time       | Slow (ms)         | F84.ast (ns)                  |
+| Physical Movement | Yes (HDD)         | No                         |
+| Used For          | Permanent storage | Temporary execution memory |
+```
+## 84.how do you copy data from RAM to CPU registers ? how do you copy data from CPU registers to RAM ?
+```
+Copying data from RAM → CPU Registers
+This is done using Load instructions (also called fetch).
+The CPU loads data from a specific memory address in RAM into a register
+Copying data from CPU Registers → RAM
+This is done using Store instructions.
+The CPU stores data from a register back into memory (RAM).
+```
+## 85 explain the scenario when pages of process-1 and pages of process-2 are copied into same frames (or) explain the scenario where pages of multiple process are sharing the same physical frames(or) Can the page table of multiple process point to same physical frames.
+```
+three scenarios--
+1.During child process creation.. the parent and child  process pages copied into same physical frame..
+2.Whwn multiple process shared data using shared memory IPC mechanisms..
+3.Whwn Multiple process share memory that are created usimg memory Mapping call.
+1️⃣ During Child Process Creation (fork system call)
+When a new process is created using fork(),
+the child process is initially an exact copy of the parent process.
+Instead of duplicating all memory immediately (which would waste RAM),
+both processes’ page tables point to the same physical frames at first.
+This technique is called Copy-On-Write (COW):
+Both share the same frames until one of them modifies the data.
+When modification happens, the OS creates a new copy of that page for the process that wrote to it.
+✅ Benefit: Saves memory and speeds up process creation.
+2️⃣ Shared Memory (IPC Mechanism)
+In Inter-Process Communication (IPC), processes may need to share data directly.
+Using shared memory (like with shmget(), shmat() system calls),
+the OS maps the same physical memory region into the address space of multiple processes.
+✅ Benefit:
+Processes can read/write to the same memory block — very fast communication, no need for copying data.
+3️⃣ Memory Mapping (mmap system call)
+When multiple processes map the same file into their memory space using mmap(),
+they can share the same physical frames that store that file’s content.
+Example: shared libraries (like .so files in Linux) are mapped this way —
+multiple programs use the same physical copy in RAM instead of loading it multiple times.
+✅ Benefit:
+Saves memory and speeds up program loading.
+```
+## 86.How child process uses the memory segment of parent process?
+```
+How child process uses parent’s memory segment
+When a child process is created using fork():
+The child gets a copy of the parent’s memory — code, data, heap, stack.
+But at first, both share the same memory (they don’t actually copy it).
+This sharing is done using a technique called Copy-on-Write (COW).
+If either parent or child changes the data, then OS creates a separate copy of that part for the one who changed it.
+```
+## 87.how the parent process and child process keep track of which instruction they are going to execute?
+```
+After a child is created with fork(), both parent and child get their own PCB (Process Control Block). Each PCB contains a context area that stores everything the OS needs to resume that process. The context area includes.
+Context Area (in PCB) contains:
+Program Counter (PC): next instruction address
+CPU Registers: temporary data storage
+Stack Pointer (SP) / Frame Pointer (FP): current stack position
+Program Status Word (PSW): flags and mode bits
+Memory Info: page table or segment details
+Process State: running, ready, waiting
+Scheduling Info: priority, queue pointers
+I/O Info: file descriptors, signals
+During a context switch the OS saves the current process’s context into its PCB and loads the next process’s context from its PCB. This is how parent and child each know exactly which instruction to execute next and can run independently.
+```
+## 88.
