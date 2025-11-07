@@ -1014,7 +1014,7 @@ all processes in that group receive the same signal.
 This ensures that related processes (like a pipeline) can be stopped or killed together.
 ```
 ## 69.Explain the role of the prlimit() system call in setting resource limits for processes.
-```
+
 prlimit() is used to get or set resource limits for any process.
  It combines both getrlimit() and setrlimit() in one call.
  Helps the OS control resource usage and prevent overload.
@@ -1025,6 +1025,6 @@ int prlimit(pid_t pid, int resource,
 pid → Process ID (use 0 for the current process).
 resource → Type of resource (e.g., RLIMIT_CPU, RLIMIT_FSIZE, etc.).
 new_limit → New limits to set (or NULL if not changing).
-old_limit → Gets the old limits (or NULL if not needed
-```
+old_limit → Gets the old limits (or NULL if not needed)
+
 ## 70.
