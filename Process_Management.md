@@ -1027,4 +1027,183 @@ resource → Type of resource (e.g., RLIMIT_CPU, RLIMIT_FSIZE, etc.).
 new_limit → New limits to set (or NULL if not changing).
 old_limit → Gets the old limits (or NULL if not needed)
 ```
-## 70.
+## 70.Discuss the concept of process scheduling policies in multi-core systems and their implications
+```
+Definition:
+Process scheduling in multi-core systems decides which process runs on which core and for how long to ensure efficient CPU use and better performance.
+Main Scheduling Policies:
+1.Symmetric Multiprocessing (SMP):
+All cores are treated equally.
+Each core has its own scheduler.
+OS balances load across cores.
+✅ Efficient and scalable.
+❌ Requires synchronization and load balancing.
+2.Asymmetric Multiprocessing (AMP):
+One core (master) controls all scheduling.
+Other cores (slaves) just execute tasks.
+✅ Simple design.
+❌ Not efficient for many cores.
+3.Affinity-Based Scheduling:
+A process is kept on the same core to reuse cached data.
+✅ Improves performance (cache locality).
+❌ Can cause uneven load.
+Load Balancing:
+Keeps work evenly distributed across all cores.
+Prevents some cores from being overloaded while others are idle.
+Implications:
+Better CPU utilization and system performance.
+Improved responsiveness and throughput.
+Need to manage fairness, cache usage, and synchronization.
+Increases scheduling complexity compared to single-core systems.
+```
+## 71.Describe the role of the setpriority() system call in adjusting process priorities.
+```
+The setpriority() system call is used to change how important (or urgent) a process is for the CPU.
+If you increase its priority (give it a lower nice value, like -10),that process will run first or more often than others.
+If you decrease its priority (give it a higher nice value, like +10),that process will run later or less often.
+Syntax--int setpriority(int which, int who, int priority);
+which → specifies target type (PRIO_PROCESS, PRIO_PGRP, or PRIO_USER)
+who → identifies the specific process, group, or user
+priority → new nice value
+```
+## 72.Explain the concept of process scheduling latency and its impact on system responsiveness.
+```
+Process scheduling latency is the time delay between when a process becomes ready to run and when it actually starts executing on the CPU.
+In other words, it’s the waiting time before the CPU starts processing a ready task.
+Causes of Scheduling Latency
+Too many runnable processes (CPU overload)
+High-priority processes occupying CPU time
+Context-switching overhead
+Interrupt handling delays
+Impact on System Responsiveness
+High Latency → Poor Responsiveness
+The system takes longer to respond to user inputs.
+Example: Applications open slowly or the cursor lags.
+Low Latency → Better Responsiveness
+Processes start quickly after becoming ready.
+Example: System reacts immediately to user actions.Inefficient scheduling algorithm.
+```
+## 73.Discuss the role of the prlimit64() system call in setting resource limits for processes with 64-bit address space
+```
+The prlimit64() system call in Linux is used to set or get resource limits for a process — specifically designed to support 64-bit address space and large resource values.
+It is an extended version of the older setrlimit() and getrlimit() calls, allowing applications to handle larger limits (like file sizes, memory, or CPU time) that exceed 32-bit values.
+int prlimit64(pid_t pid, int resource,
+              const struct rlimit64 *new_limit,
+              struct rlimit64 *old_limit);
+Parameters:
+pid → Process ID (0 means current process)
+resource → Type of limit (e.g., RLIMIT_CPU, RLIMIT_AS, RLIMIT_FSIZE)
+new_limit → Pointer to structure defining new limits
+old_limit → Pointer to store the old limits..
+Role / Use:
+Controls resource usage by processes (CPU time, memory, file size, etc.)
+Prevents a process from overusing system resources.
+Supports 64-bit resource values, allowing management of very large resources in modern systems.
+```
+## 74 Describe the purpose of the sched_getaffinity() system call in querying the CPU  affinity of a process
+```
+It’s a system call in Linux that is used to find out which CPU cores a process can run on.
+Every process in a computer can be allowed to run on one or more CPU cores.
+The set of allowed cores for a process is called its CPU affinity.
+Example:
+If your system has 4 cores (CPU0, CPU1, CPU2, CPU3),
+and one process is allowed to run only on CPU0 and CPU1,
+then sched_getaffinity() will show that information.
+sched_getaffinity() → checks which CPUs a process can use.
+sched_setaffinity() → sets which CPUs a process can use.
+```
+## 75.Discuss the concept of process checkpointing and its relevance in fault tolerance and process migration
+```
+Process checkpointing is the technique of saving the current state of a running process (such as its memory, CPU registers, open files, and variables) to a file called a checkpoint file.
+This saved state can later be restored to continue execution from the same point — even if the system crashes or the process is moved to another machine.
+How It Works:
+The operating system or a checkpointing tool takes a snapshot of the process state.
+The snapshot is stored on disk.
+Later, the process can be restarted (restored) from that snapshot instead of starting over.
+Relevance in Fault Tolerance
+If a system fails or crashes, the process can be restarted from the last checkpoint instead of beginning from scratch.
+This minimizes data loss and computation time.
+Example: In long scientific simulations, checkpointing ensures progress isn’t lost if power fails.
+Relevance in Process Migration
+Checkpointing allows a process to move from one machine to another.
+The process is checkpointed on one system and restored on another,
+allowing load balancing and efficient resource use in distributed systems
+```
+## 76 Explain the significance of the /proc filesystem in providing information about processes in Linux
+```
+The /proc filesystem in Linux is a virtual filesystem located in the root directory that provides real-time information about running processes and system resources.
+Each running process has a directory under /proc named by its Process ID (PID) (for example, /proc/1234), which contains details such as the process’s status, memory usage, CPU time, and open files.
+Significance:
+Provides a simple interface to get process and system details without special tools.
+Used by commands like ps, top, htop, and vmstat.
+Helps in system monitoring, debugging, and performance analysis.
+```
+## 77. Discuss the concept of process re-parenting and its implications in process management
+```
+When a parent process terminates before its child process, the child process is said to become orphaned. In such cases, the init process (PID 1) or sometimes systemd automatically adopts (re-parents) the orphaned process. This mechanism ensures that every running process always has a valid parent.
+Implications:
+Ensures no process is left without a parent.
+Prevents zombie processes by guaranteeing proper cleanup.
+Helps maintain process hierarchy and system stability.
+```
+## 78. what is process and what is the difference between process and program?
+```
+Program Memory Segments (before execution)
+A program (just stored on disk) has the following segments:
+Text segment → contains the compiled code (instructions).
+Data segment → stores global and static initialized variables.
+BSS segment → stores global and static uninitialized variables.
+These exist in the executable file — but the program is not yet running.
+Process Memory Segments (when running)
+When the program is loaded into memory and starts executing (becomes a process),
+it gets two more important segments:
+Heap → for dynamically allocated memory (e.g., malloc() or new).
+Stack → for function calls, local variables, and return addresses
+```
+## 79.what is the difference between ps and top?
+```
+ps
+Shows the list of running processes only once (at that moment).
+It does not update automatically.
+You have to run it again to see new data
+Top
+Shows the running processes continuously (live).
+The screen updates every few seconds automatically.
+You can see CPU and memory usage changing in real time.
+ps = photo of processes (static)
+top = video of processes (dynamic)
+```
+## 80.what are the types of processes we have explain each process breifly?
+```
+System Process
+Meaning: Processes started automatically by the operating system when the system boots up.
+They manage hardware and background system tasks.
+Example:
+systemd or init → starts all other processes after boot.
+kthreadd → manages kernel threads
+User Process
+Meaning: Processes started by you (the user) — like opening apps or running programs.
+Example:
+Opening Chrome → starts a user process.
+Running java HelloWorld → creates a user process.
+Think of it like: The tasks you do — open browser, editor, etc.
+Foreground Process
+Meaning: Process that runs in front of you — it takes input from keyboard and shows output on screen.
+Example:
+Typing cat file.txt → it shows file content right in your terminal.
+Running python script.py → runs in foreground and waits for input/output.
+Think of it like: You’re talking directly to the process.
+Background Process
+Meaning: Process that runs behind the scenes — it doesn’t need your input.
+Example:
+./long_task.sh &
+→ Runs in background. You can still type other commands while it runs.
+Think of it like: You’re cooking while your washing machine works automatically in background.
+Daemon Process
+Meaning: A special background process that runs continuously to provide system services.
+It starts at boot time and has no terminal connection.
+Example:
+sshd → handles login/logout through SSH.
+crond → runs scheduled tasks like backups.
+cupsd → manages printer services.
+Think of it like: A security guard — always running, waiting to serve when needed.
