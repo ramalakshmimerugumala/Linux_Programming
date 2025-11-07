@@ -1226,3 +1226,24 @@ Think of it like: A ghost — dead, but still listed until it’s properly remov
 ```
 Yes!
 The parent process can access the exit status (return value) of its child process using the wait() or waitpid() system call.
+Function	                       Purpose	                       Returns
+wait(&status)	         Waits for any child to finish	   Returns PID of child
+waitpid(pid, &status, 0)	Waits for a specific child	             Returns PID of that child
+WEXITSTATUS(status)	Gets exit code from child	               Exit value (0–255)
+```
+## 82.define system call name some blocking system calls?
+```
+A system call is a way for a user program to request a service from the operating system kernel — such as reading from a file, creating a process, or communicating over the network.
+It acts as a bridge between user mode and kernel mode.
+Some Common Blocking System Calls:
+A blocking system call is one that makes the process wait until the requested operation completes.
+| **System Call**       | **Description**                            | **Why It Blocks**                   |
+| --------------------- | ------------------------------------------ | ----------------------------------- |
+| `read()`              | Reads data from a file or input device     | Blocks until data becomes available |
+| `write()`             | Writes data to a file or output device     | Blocks if buffer is full            |
+| `accept()`            | Waits for a client to connect on a socket  | Blocks until a connection arrives   |
+| `wait()`              | Waits for child process to finish          | Blocks until child terminates       |
+| `sleep()`             | Suspends process for a specific time       | Blocks until the timer expires      |
+| `select()` / `poll()` | Waits for I/O on multiple file descriptors | Blocks until an event occurs        |
+```
+
