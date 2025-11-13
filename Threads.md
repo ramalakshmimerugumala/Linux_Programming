@@ -1,4 +1,4 @@
-## 1.Thraed Program
+## .Thraed Program
 ```
 #include <stdio.h>
 #include <unistd.h>
@@ -36,4 +36,19 @@ void *threadfunc2(void *args){
         }
 output
 4000
+```
+## Write a C program to create a thread that prints "Hello, World!"?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *threadfun(void *args){
+ char *sptr;
+ sptr=(char *)args;
+ printf("%s",sptr);
+}
+int main(){
+pthread_t ti;
+pthread_create(&ti,NULL,threadfun,"HELLO");
+pthread_join(ti,NULL);
+}
 ```
