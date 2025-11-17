@@ -254,4 +254,180 @@ int main(){
  pthread_join(t1,NULL);
 }
 ```
-## 11.
+## 11.Write a C program to create a thread that prints "Hello, World!" with thread synchronization
+```
+#include <stdio.h>
+#include <pthread.h>
+pthread_mutex_t lock;
+void *myfunc(void *args){
+        pthread_mutex_lock(&lock);
+        printf("Hello World..");
+        pthread_mutex_unlock(&lock);
+}
+int main(){
+        pthread_t t1;
+        pthread_mutex_init(&lock,NULL);
+        pthread_create(&t1,NULL,myfunc,NULL);
+        pthread_join(t1,NULL);
+        pthread_mutex_destroy(&lock);
+}
+```
+## 12.Develop a C program to create two threads that print their thread IDs and synchronize their output
+```
+#include <pthread.h>
+pthread_mutex_t lock;
+void *func(void *args){
+pthread_mutex_lock(&lock);
+printf("%lu ",pthread_self());
+pthread_mutex_unlock(&lock);
+return NULL;
+}
+int main(){
+        pthread_t t1,t2;
+        pthread_mutex_init(&lock,NULL);
+        pthread_create(&t1,NULL,func,NULL);
+        pthread_create(&t2,NULL,func,NULL);
+        pthread_join(t1,NULL);
+        pthread_join(t2,NULL);
+        pthread_mutex_destroy(&lock);
+}
+```
+## 13.Implement a C program to create a thread that generates random numbers and synchronizes access to a shared buffer?
+```
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+#define size 5
+int buff[size];
+int idx=0;
+pthread_mutex_t lock;
+void *myfunc(void *args){
+      while(idx<size){
+ pthread_mutex_lock(&lock);
+      int num=rand()%100;
+      buff[idx++]=num;
+ pthread_mutex_unlock(&lock);
+        }
+ return NULL;
+}
+int main(){
+ pthread_t t1;
+        pthread_mutex_init(&lock,NULL);
+        pthread_create(&t1,NULL,myfunc,NULL);
+        pthread_join(t1,NULL);
+       pthread_mutex_destroy(&lock);
+       for(int i=0;i<size;i++){
+               printf("%d ",buff[i]);
+       }
+}
+```
+## 14 Write a C program to create a thread that performs addition of two numbers with mutex locks?
+```
+#include <stdio.h>
+#include <pthread.h>
+pthread_mutex_t lock;
+void *myfunc(void *args){
+int *num=(int *)args;
+int a=num[0];
+int b=num[1];
+ pthread_mutex_lock(&lock);
+ printf("%d",a+b);
+ pthread_mutex_unlock(&lock);
+}
+int main(){
+pthread_t t1;
+int num[2];
+printf("Enter a number.");
+scanf("%d",&num[0]);
+printf("Enter a number");
+scanf("%d",&num[1]);
+pthread_mutex_init(&lock,NULL);
+pthread_create(&t1,NULL,myfunc,&num);
+pthread_join(t1,NULL);
+pthread_mutex_destroy(&lock);
+}
+```
+## 15 Implement a C program to create two threads that increment and decrement a shared variable, respectively, using mutex locks?
+```
+#include <stdio.h>
+#include <pthread.h>
+pthread_mutex_t lock;
+int sharedvar=0;
+void *increment(void *args){
+pthread_mutex_lock(&lock);
+sharedvar++;
+printf("Increment value=%d\n",sharedvar);
+pthread_mutex_unlock(&lock);
+}
+void *decrement(void *args){
+ pthread_mutex_lock(&lock);
+ sharedvar--;
+ printf("Decremented value=%d\n",sharedvar);
+ pthread_mutex_unlock(&lock);
+}
+int main(){
+ pthread_t t1,t2;
+        pthread_mutex_init(&lock,NULL);
+        pthread_create(&t1,NULL,increment,NULL);
+        pthread_create(&t2,NULL,decrement,NULL);
+        pthread_join(t1,NULL);
+        pthread_join(t2,NULL);
+        pthread_mutex_destroy(&lock);
+}
+```
+## 16 Develop a C program to create a thread that reads input from the user and synchronizes access to shared resources?
+```
+#include <stdio.h>
+#include <pthread.h>
+pthread_mutex_t lock;
+void *myfunc(void *args){
+char sptr[100];
+pthread_mutex_lock(&lock);
+printf("Enter a string");
+scanf("%s",sptr);
+printf("you entered string=%s",sptr);
+pthread_mutex_unlock(&lock);
+}
+int main(){
+pthread_t t1;
+pthread_mutex_init(&lock,NULL);
+pthread_create(&t1,NULL,myfunc,NULL);
+pthread_join(t1,NULL);
+pthread_mutex_destroy(&lock);
+}
+```
+## 17.Implement a C program to create a thread that prints prime numbers up to a given limit  with mutex locks?
+```
+#include <stdio.h>
+#include <pthread.h>
+pthread_mutex_t lock;
+int limit;
+int prime(int n){
+ for(int i=2;i*i<=n;i++){
+         if(n%i==0){
+                 return 0;
+         }
+ }
+ return 1;
+}
+void *myfunc(void *args){
+ pthread_mutex_lock(&lock);
+ for(int i=2;i<=limit;i++){
+         if(prime(i)){
+            printf("%d ",i);
+ }
+ }
+ pthread_mutex_unlock(&lock);
+}
+int main(){
+pthread_t t1;
+pthread_mutex_init(&lock,NULL);
+printf("Enter limit");
+scanf("%d",&limit);
+pthread_create(&t1,NULL,myfunc,NULL);
+pthread_join(t1,NULL);
+pthread_mutex_destroy(&lock);
+}
+```
+## 18 
+
