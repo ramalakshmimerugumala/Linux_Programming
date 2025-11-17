@@ -465,5 +465,72 @@ output
 Enter a limit...10
 0 1 1 2 3 5 8 13 21 34 88
 ```
-## 19
+## 19 .Write a C program to create a thread that checks if a given year is a leap year using dynamic programming with mutex locks
+```
+#include <stdio.h>
+#include <pthread.h>
+pthread_mutex_t lock;
+void *myfunc(void *args){
+int year=*(int*)args;
+pthread_mutex_lock(&lock);
+if(year%4==0 && year%100!=0 ||year%400==0){
+        printf("Leap year");
+}
+else{
+        printf("Not a leap year");
+}
+pthread_mutex_unlock(&lock);
+return NULL;
+}
+int main(){
+ pthread_t t1;
+ int year;
+ printf("Enter year");
+ scanf("%d",&year);
+ pthread_mutex_init(&lock,NULL);
+ pthread_create(&t1,NULL,myfunc,&year);
+ pthread_join(t1,NULL);
+ pthread_mutex_destroy(&lock);
+}
+```
+## 20.Write a C program to create a thread that checks if a given string is a palindrome using dynamic programming with mutex locks?
+```
+#include <stdio.h>
+#include <pthread.h>
+#include <string.h>
+pthread_mutex_t lock;
+void *myfun(void *args){
+char *str=(char *)args;
+int len=strlen(str);
+int pal=1;
+pthread_mutex_lock(&lock);
+for(int i=0,j=len-1;i<j;i++,j--){
+if(str[i]!=str[j]){
+        pal=0;
+        break;
+}
+}
+if(pal==1){
+        printf("Palindrome");
+` printf("Palindrome");
+}
+else{
+printf("Not palindrome");
+}
+pthread_mutex_unlock(&lock);
+}
+int main(){
+ char str[100];
+ printf("Enter string.");
+ scanf("%s",str);
+ pthread_t t1;
+ pthread_mutex_init(&lock,NULL);
+ pthread_create(&t1,NULL,myfun,&str);
+ pthread_join(t1,NULL);
+ pthread_mutex_destroy(&lock);
+}
+```
+## 21.
+
+
 
