@@ -530,7 +530,106 @@ int main(){
  pthread_mutex_destroy(&lock);
 }
 ```
-## 21.
+## 21.Implement a C program to create a thread that performs selection sort on an array of integers?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *func(void *args){
+ int *arr=(int*)args;
+ int n=5;
+ for(int i=0;i<5;i++){
+         int min=i;
+         for(int j=i+1;j<n;j++){
+                 if(arr[j]<arr[min]){
+                         min=j;
+                 }
+         }
+         int temp=arr[i];
+         arr[i]=arr[min];
+         arr[min]=temp;
+ }
+ return NULL;
+}
+int main(){
+pthread_t t1;
+int arr[5];
+printf("Enter elements in the array");
+for(int i=0;i<5;i++){
+        scanf("%d",&arr[i]);
+}
+pthread_create(&t1,NULL,func,&arr);
+pthread_join(t1,NULL);
+for(int i=0;i<5;i++){
+        printf("%d",arr[i]);
+}
+}
+```
+## 22..Develop a C program to create a thread that calculates the area of a triangle?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *area(void *args){
+        float *arr=(float *)args;
+        float base=arr[0];
+        float height=arr[1];
+        float area=0.5*base*height;
+        printf("Area=%f",area);
+        return NULL;
+}
+int main(){
+pthread_t t1;
+float arr[2];
+printf("Enter base value");
+scanf("%f",&arr[0]);
+printf("Enter Height value");
+scanf("%f",&arr[1]);
+pthread_create(&t1,NULL,area,arr);
+pthread_join(t1,NULL);
+}
+```
+## 23.Write a C program to create a thread that calculates the sum of squares of numbers from 1 to 100?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *myfunc(void *args){
+ int sum=0;
+ for(int i=1;i<=100;i++){
+   sum+=i*i;
+}
+printf("%d",sum);
+return NULL;
+}
+int main(){
+ pthread_t t1;
+ pthread_create(&t1,NULL,myfunc,NULL);
+ pthread_join(t1,NULL);
+}
+```
+## 24.Write a C program to create a thread that generates a random array of integers?
+```
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+#define size 5
+int arr[size];
+void *myfunc(void *args){
+ for(int i=0;i<5;i++){
+   arr[i]=rand()%100;
+ }
+ return NULL;
+}
+int main(){
+pthread_t t1;
+srand(time(NULL));
+pthread_create(&t1,NULL,myfunc,&arr);
+pthread_join(t1,NULL);
+for(int i=0;i<5;i++){
+   printf("%d ",arr[i]);
+}
+}
+```
+## 25 Implement a C program to create a thread that performs bubble sort on an array of integers?
+```
 
 
 
