@@ -630,6 +630,87 @@ for(int i=0;i<5;i++){
 ```
 ## 25 Implement a C program to create a thread that performs bubble sort on an array of integers?
 ```
+#include <stdio.h>
+#include <pthread.h>
+#define size 5
+void *bubble(void *args){
+  int *arr=(int *)args;
+  for(int i=0;i<size;i++){
+          for(int j=0;j<size-i-1;j++){
+                  if(arr[j]>arr[j+1]){
+                      int temp=arr[j];
+                      arr[j]=arr[j+1];
+                      arr[j+1]=temp;
+                  }
+          }
+  }
+  return NULL;
+}
+int main(){
+int arr[5];
+        pthread_t t1;
+        printf("Enter the elements in the array");
+        for(int i=0;i<5;i++){
+             scanf("%d",&arr[i]);
+        }
+        pthread_create(&t1,NULL,bubble,&arr);
+        pthread_join(t1,NULL);
+        for(int i=0;i<5;i++){
+                printf("%d ",arr[i]);
+        }
+}
+```
+## 26 .Develop a C program to create a thread that calculates the greatest common divisor (GCD) of two numbers?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *gcd(void *args){
+        int *num=(int *)args;
+        int a=num[0];
+        int b=num[1];
+        int min;
+        min=(a<b)?a:b;
+        while(1){
+   if(a%min==0 && b%min==0){
+  printf("GCD of two numbers=%d",min);
+   break;
+   }
+   min--;
+}
+return NULL;
+}
+int main(){
+pthread_t t1;
+int num[2];
+printf("Enter a number1");
+scanf("%d",&num[0]);
+printf("Enter number2");
+scanf("%d",&num[1]);
+pthread_create(&t1,NULL,gcd,&num);
+pthread_join(t1,NULL);
+}
+```
+## 27.Implement a C program to create a thread that calculates the sum of even numbers from 1to 100?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *even(void *args){
+int sum=0;
+for(int i=0;i<=100;i++){
+        if(i%2==0){
+                sum+=i;
+}
+}
+printf("%d",sum);
+return NULL;
+}
+int main(){
+ pthread_t t1;
+ pthread_create(&t1,NULL,even,NULL);
+ pthread_join(t1,NULL);
+}
+```
+## 28.
 
 
 
