@@ -965,6 +965,71 @@ pthread_create(&t1,NULL,myfunc,NULL);
 pthread_join(t1,NULL);
 }
 ```
-## 37
+## 37 Write a C program to create a thread that calculates the factorial of numbers from 1 to 10?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *myfunc(void *args){
+        int fact=1;
+    for(int i=1;i<=10;i++){
+            fact=fact*i;
+    printf("Factorial of %d is %d\n",i,fact);
+    }
+}
+int main(){
+        pthread_t t1;
+        pthread_create(&t1,NULL,myfunc,NULL);
+        pthread_join(t1,NULL);
+}
+```
+## 38.Write a C program to create two threads using pthreads library. Each thread should print "Hello, World!" along with its thread ID?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *myfunc(void *args){
+ printf("Hello World..\n");
+ printf("%lu\n",pthread_self());
+}
+void *myfunc2(void *args){
+        printf("Hello World..\n");
+        printf("%lu\n",pthread_self());
+        return NULL;
+}
+int main(){
+pthread_t t1,t2;
+pthread_create(&t1,NULL,myfunc,NULL);
+pthread_create(&t2,NULL,myfunc2,NULL);
+pthread_join(t1,NULL);
+pthread_join(t2,NULL);
+}
+```
+## 39..Modify the previous program to pass arguments to the threads and print those arguments along with the thread ID?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *myfunc(void *args){
+  int val=*(int*)args;
+  printf("%d\n",val);
+ printf("Hello World..\n");
+ printf("%lu\n",pthread_self());
+}
+void *myfunc2(void *args){
+        int val2=*(int*)args;
+        printf("%d\n",val2);
+        printf("Hello World..\n");
+        printf("%lu\n",pthread_self());
+        return NULL;
+}
+int main(){
+pthread_t t1,t2;
+int a1=10;
+int a2=20;
+pthread_create(&t1,NULL,myfunc,&a1);
+pthread_create(&t2,NULL,myfunc2,&a2);
+pthread_join(t1,NULL);
+pthread_join(t2,NULL);
+}
+```
+## 40
 
 
