@@ -802,8 +802,143 @@ int main() {
     return 0;
 }
 ```
-## 31.
+## 31.Write a C program to create a thread that checks if a given number is a perfect square?
+```
+#include<stdio.h>
+#include <pthread.h>
+void *myfun(void *args){
+    int num=*(int*)args;
+    int flag=0;
+    for(int i=1;i<=num;i++){
+        if(i*i==num){
+            flag=1;
+        }
+    }
+    if(flag==1){
+        printf("Perfect square");
+    }
+    else{
+        printf("Not a perfect square");
+    }
+    return NULL;
+}
+int main(){
+   pthread_t t1;
+   int num;
+   printf("Enter a number");
+   scanf("%d",&num);
+   pthread_create(&t1,NULL,myfun,&num);
+   pthread_join(t1,NULL);
+}
+```
+## 32 Implement a C program to create a thread that calculates the factorial of a given number using recursion?
+```
+#include <stdio.h>
+#include <pthread.h>
+int factorial(int n){
+ if(n<=1)
+ return 1;
+ return n*factorial(n-1);
+}
+void *myfunc(void *args){
+    int num=*(int*)args;
+    int result=factorial(num);
+    printf("Facorial of a number=%d",result);
+}
+int main(){
+    int num;
+    printf("Enter a number");
+    scanf("%d",&num);
+    pthread_t t1;
+    pthread_create(&t1,NULL,myfunc,&num);
+    pthread_join(t1,NULL);
+}
+```
+## 33.Develop a C program to create a thread that finds the maximum element in an array
+```
+#include <stdio.h>
+#include <pthread.h>
+int arr[5];
+void *myfunc(void *args){
+    int max=arr[0];
+    for(int i=0;i<5;i++){
+        if(arr[i]>max){
+            max=arr[i];
+        }
+    }
+    printf("%d",max);
+    return NULL;
+}
+int main(){
+    printf("Enter the elements in the array");
+    for(int i=0;i<5;i++){
+        scanf("%d",&arr[i]);
+    }
+    pthread_t t1;
+    pthread_create(&t1,NULL,myfunc,arr);
+    pthread_join(t1,NULL);
+}
+```
+## 34.Write a C program to create a thread that sorts an array of strings?
+```
+#include <stdio.h>
+#include <pthread.h>
+#include <string.h>
+char str[10][50];
+char temp[50];
+int n=5;
+void *myfunc(void *args){
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n-i-1;j++){
+            if(strcmp(str[j],str[j+1])>0){
+                strcpy(temp,str[j]);
+                strcpy(str[j],str[j+1]);
+                strcpy(str[j+1],temp);
+            }
+        }
+    }
+    return NULL;
+}
+int main(){
+    printf("Enter strings");
+    for(int i=0;i<n;i++){
+        scanf("%s",str[i]);
+    }
+    pthread_t t1;
+    pthread_create(&t1,NULL,myfunc,NULL);
+    pthread_join(t1,NULL);
+    printf("Sorted strings..");
+    for(int i=0;i<n;i++){
+        printf("%s\n",str[i]);
+    }
+}
+```
+## 35 Implement a C program to create a thread that calculates the square root of a number?
+```
+#include <stdio.h>
+#include <pthread.h>
+#include <math.h>
 
+void* calculate_sqrt(void *args) {
+    double num = *(double*)args;
+    double result = sqrt(num);
+    printf("Square root of %.2f = %.2f\n", num, result);
+    return NULL;
+}
 
+int main() {
+    pthread_t t1;
+    double num;
+
+    printf("Enter a number: ");
+    scanf("%lf", &num);
+
+    pthread_create(&t1, NULL, calculate_sqrt, &num);
+    pthread_join(t1, NULL);
+
+    return 0;
+}
+```
+## 36
 
 
