@@ -939,6 +939,32 @@ int main() {
     return 0;
 }
 ```
-## 36
+## 36 Write a C program to create a thread that generates a random password?
+```
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+int len;
+void *myfunc(){
+    char charset[]="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&";
+    char password[len+1];
+    for(int i=0;i<len;i++){
+    int index=rand()%(sizeof(charset-1));
+    password[i]=charset[index];
+    }
+    password[len]='\0';
+    printf("Random password=%s",password);
+    return NULL;
+}
+int main(){
+    printf("Enter a length of a password");
+    scanf("%d",&len);
+pthread_t t1;
+srand(time(NULL));
+pthread_create(&t1,NULL,myfunc,NULL);
+pthread_join(t1,NULL);
+}
+```
+## 37
 
 
