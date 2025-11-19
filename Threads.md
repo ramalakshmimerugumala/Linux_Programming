@@ -710,7 +710,100 @@ int main(){
  pthread_join(t1,NULL);
 }
 ```
-## 28.
+## 28.Implement a C program to create a thread that performs multiplication of two matrices?
+```
+#include <stdio.h>
+#include <pthread.h>
+int arr1[3][2];
+int arr2[2][3];
+int arr3[100][100];
+void *matrix(void *args){
+        for(int i=0;i<3;i++){
+                for(int j=0;j<3;j++){
+                        arr3[i][j]=0;
+                }
+        }
+ for(int i=0;i<3;i++){
+         for(int j=0;j<3;j++){
+                 for(int k=0;k<2;k++){
+                        arr3[i][j]+=arr1[i][k]*arr2[k][j];
+                 }
+         }
+ }
+ return NULL;
+}
+int main(){
+pthread_t t1,t2;
+printf("Enter the elemets in the first array");
+for(int i=0;i<3;i++){
+        for(int j=0;j<2;j++){
+                scanf("%d",&arr1[i][j]);
+        }
+}
+printf("Enter the elements in the array2");
+for(int i=0;i<2;i++){
+for(int j=0;j<3;j++){
+                scanf("%d",&arr2[i][j]);
+        }
+}
+pthread_create(&t1,NULL,matrix,NULL);
+pthread_join(t1,NULL);
+printf("Resultant matrix:");
+for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+                printf("%d ",arr3[i][j]);
+        }
+        printf("\n");
+}
+}
+```
+## 29.Implement a C program to create a thread that generates a random string?
+```
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+void *myfunc(void *args){
+ char str[100];
+ int length=*(int*)args;
+ for(int i=0;i<length;i++){
+         str[i]='A'+rand()%26;
+ }
+ str[length]='\0';
+ printf("Random string=%s",str);
+}
+int main(){
+ pthread_t t1;
+ int len;
+ printf("Enter a length");
+ scanf("%d",&len);
+srand(time(NULL));
+ pthread_create(&t1,NULL,myfunc,&len);
+ pthread_join(t1,NULL);
+}
+```
+## 30.Develop a C program to create a thread that calculates the average of numbers from 1 to100?
+```
+#include <stdio.h>
+#include <pthread.h>
+void* calc_average(void* arg) {
+    int sum = 0;
+    for (int i = 1; i <= 100; i++) {
+        sum += i;
+    }
+    float avg = sum / 100.0;
+    printf("Average of numbers 1 to 100 = %.2f\n", avg);
+
+    return NULL;
+}
+int main() {
+    pthread_t t1;
+    pthread_create(&t1, NULL, calc_average, NULL);
+    pthread_join(t1, NULL);
+    return 0;
+}
+```
+## 31.
+
 
 
 
