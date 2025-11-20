@@ -1030,6 +1030,65 @@ pthread_join(t1,NULL);
 pthread_join(t2,NULL);
 }
 ```
-## 40
+## 40Write a C program to demonstrate thread synchronization using mutex locks. Create two threads that increment a shared variable using mutex locks to ensure proper synchronization?
+```
+#include <stdio.h>
+#include <pthread.h>
+int shared_var=0;
+pthread_mutex_t lock;
+void *myfunc(void *args){
+    pthread_mutex_lock(&lock);
+    shared_var++;
+    printf("Thread1=%d ",shared_var);
+    pthread_mutex_unlock(&lock);
+}
+void *myfunc2(void *args){
+    pthread_mutex_lock(&lock);
+    shared_var++;
+    printf("Thread2=%d ",shared_var);
+    pthread_mutex_unlock(&lock);
+}
+int main(){
+    pthread_t t1,t2;
+    pthread_mutex_init(&lock,NULL);
+    pthread_create(&t1,NULL,myfunc,NULL);
+    pthread_create(&t2,NULL,myfunc2,NULL);
+    pthread_join(t1,NULL);
+    pthread_join(t2,NULL);
+    pthread_mutex_destroy(&lock);
+}
+```
+## 41 Extend the previous program to use semaphore instead of mutex locks for thread synchronization?
+```
+#include <stdio.h>
+#include <pthread.h>
+#include <semaphore.h>
+int shared_var=0;
+sem_t  sem;
+void *myfunc(void *args){
+    sem_wait(&sem);
+    shared_var++;
+    printf("Thread1=%d",shared_var);
+    sem_post(&sem);
+    return NULL;
+}
+void *myfunc2(void *args){
+    sem_wait(&sem);
+    shared_var++;
+    printf("Thread2=%d",shared_var);
+    sem_post(&sem);
+    return NULL;
+}
+int main(){
+    pthread_t t1,t2;
+    sem_init(&sem,0,1);
+    pthread_create(&t1,NULL,myfunc,NULL);
+    pthread_create(&t2,NULL,myfunc2,NULL);
+    pthread_join(t1,NULL);
+    pthread_join(t2,NULL);
+    sem_destroy(&sem);
+}
+```
+## 42.
 
 
