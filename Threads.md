@@ -1089,6 +1089,130 @@ int main(){
     sem_destroy(&sem);
 }
 ```
-## 42.
+## 42.Write a C program to implement the producer-consumer problem using pthreads. Create two threads - one for producing items and another for consuming items from a shared buffer?
+```
+#include <stdio.h>
+#include <pthread.h>
+#include <semaphore.h>
+sem_t empty;
+sem_t full;
+int buffer[5];
+void *producer(void *args){
+    for(int i=1;i<5;i++){
+        sem_wait(&empty);
+        buffer[i]=i;
+    printf("Producer Buffer=%d\n",buffer[i]);
+    sem_post(&full);
+    }
+    return NULL;
+}
+void *consumer(void *args){
+    
+    for(int i=1;i<5;i++){
+        sem_wait(&full); 
+    printf("Consumer buffer=%d\n",buffer[i]);
+    sem_post(&empty);
+    }
+    return NULL;
+}
+int main(){
+    pthread_t t1,t2;
+    sem_init(&empty,0,1);
+    sem_init(&full,0,0);
+    pthread_create(&t1,NULL,producer,NULL);
+    pthread_create(&t2,NULL,consumer,NULL);
+    pthread_join(t1,NULL);
+    pthread_join(t2,NULL);
+    sem_destroy(&empty);
+    sem_destroy(&full);
+}
+```
+## 43 Write a C program to demonstrate thread cancellation. Create a thread that runs an infinite loop and cancels it after a certain condition is met from the main thread?
+```
+#include <stdio.h>
+#include <pthread.h>
+#include<unistd.h>
+void *infiniteloop(void *args){
+    while(1){
+        printf("Infinite loop..\n");
+        sleep(1);
+    }
+    return NULL;
+}
+int main(){
+    pthread_t t1;
+    pthread_create(&t1,NULL,infiniteloop,NULL);
+    sleep(5);
+    printf("Main:cancelling the infinite loop");
+    pthread_cancel(t1);
+    pthread_join(t1,NULL);
+}
+```
+## 44 .Write a C program to create a thread that prints the even numbers between 1 and 20?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *even(void *args){
+    //int num=*(int *)args;
+    for(int i=0;i<=20;i++){
+    if(i%2==0){
+        printf("Even=%d\n",i);
+    }
+    else{
+        printf("Odd=%d\n",i);
+    }
+    }
+    return NULL;
+}
+int main(){
+    pthread_t t1,t2;
+    pthread_create(&t1,NULL,even,NULL);
+    pthread_create(&t2,NULL,even,NULL);
+    pthread_join(t1,NULL);
+    pthread_join(t2,NULL);
+}
+```
+## 45 .Implement a C program to create a thread that calculates the sum of squares of numbers from 1 to 10?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *myfunc(void *args){
+ int sum=0;
+ for(int i=0;i<=10;i++){
+         sum+=i*i;
+}
+printf("%d",sum);
+
+return NULL;
+}
+int main(){
+        pthread_t t1;
+        pthread_create(&t1,NULL,myfunc,NULL);
+        pthread_join(t1,NULL);
+}
+```
+## 46.Implement a C program to create a thread that prints the factors of a given number?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *factors(void *args){
+ int num=*(int*)args;
+ for(int i=1;i<=num;i++){
+     if(num%i==0){
+             printf("factors=%d\n",i);
+     }
+}
+return NULL;
+}
+int main(){
+int num;
+printf("ENter a number");
+scanf("%d",&num);
+pthread_t t1;
+pthread_create(&t1,NULL,factors,&num);
+pthread_join(t1,NULL);
+}
+```
+## 47
 
 
