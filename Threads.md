@@ -1255,6 +1255,72 @@ int main(){
         pthread_join(t1,NULL);
 }
 ```
-## 49.
+## 49..Develop a C program to create a thread that prints the multiplication table of a given number up to a given limit?
+```
+#include <stdio.h>
+#include <pthread.h>
+int limit;
+void *myfunc(void *args){
+    int num=*(int*)args;
+   for(int i=1;i<=limit;i++){
+       printf("%d*%d=%d\n",num,i,num*i);
+   } 
+   return NULL;
+}
+int main(){
+    int num;
+    printf("Enter a number");
+    scanf("%d",&num);
+    printf("ENter limit");
+    scanf("%d",&limit);
+    pthread_t t1;
+    pthread_create(&t1,NULL,myfunc,&num);
+    pthread_join(t1,NULL);
+}
+```
+## 50 Develop a C program to create a thread that prints the current system time?
+```
+#include <stdio.h>
+#include <pthread.h>
+#include <time.h>
+
+void *printTime(void *args) {
+    time_t t;
+    time(&t);                 // get current time
+    printf("Current System Time: %s", ctime(&t));
+    return NULL;
+}
+
+int main() {
+    pthread_t t1;
+
+    pthread_create(&t1, NULL, printTime, NULL);
+    pthread_join(t1, NULL);
+
+    return 0;
+}
+```
+## 51.Develop a C program to create a thread that prints numbers from 10 to 1 in descending order using mutex locks?
+```
+#include <stdio.h>
+#include <pthread.h>
+pthread_mutex_t lock;
+void *myfunc(void *args){
+    pthread_mutex_lock(&lock);
+   for(int i=10;i>=1;i--){
+       printf("%d ",i);
+   } 
+    pthread_mutex_unlock(&lock);
+   return NULL;
+}
+int main(){
+    pthread_t t1;
+    pthread_mutex_init(&lock,NULL);
+    pthread_create(&t1,NULL,myfunc,NULL);
+    pthread_join(t1,NULL);
+    pthread_mutex_destroy(&lock);
+}
+```
+## 52
 
 
