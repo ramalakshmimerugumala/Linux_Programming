@@ -1213,6 +1213,48 @@ pthread_create(&t1,NULL,factors,&num);
 pthread_join(t1,NULL);
 }
 ```
-## 47
+## 47 Develop a C program to create a thread that prints the English alphabet in uppercase?
+```
+#include <stdio.h>
+#include <pthread.h>
+void *upper(void *args){
+  for(char ch='A';ch<='Z';ch++){
+          printf("%c",ch);
+}
+return NULL;
+}
+int main(){
+pthread_t t1;
+pthread_create(&t1,NULL,upper,NULL);
+pthread_join(t1,NULL);
+}
+```
+## 48 Implement a C program to create a thread that checks if a given number is divisible by another given number?
+```
+#include <pthread.h>
+void *myfunc(void *args){
+ int *num1=(int *)args;
+ int a=num1[0];
+ int b=num1[1];
+ if(a%b==0){
+         printf("%d is divisibel by %d",a,b);
+}
+else{
+        printf("Not divisible");
+}
+return NULL;
+}
+int main(){
+        int num[2];
+        printf("ENter a number1");
+        scanf("%d",&num[0]);
+        printf("Enter number2");
+        scanf("%d",&num[1]);
+        pthread_t t1;
+        pthread_create(&t1,NULL,myfunc,&num);
+        pthread_join(t1,NULL);
+}
+```
+## 49.
 
 
