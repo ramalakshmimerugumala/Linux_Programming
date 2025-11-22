@@ -76,3 +76,46 @@ Threads are lighter, faster, and share memory — processes are heavier and sepa
 Processes are safer and isolated, so one process cannot disturb another.
 ```
 ## 12 How do you overcome this updation or synchronization issue.when the multiple threads are trying to access the global variables?
+```
+We overcome the synchronization issue by using a mutex (lock).
+A mutex allows only one thread at a time to access the global variable, preventing race conditions.
+Use a mutex to protect shared global variables.
+```
+## 13 How much cpu time is given to user space thread and kernel space thread?
+```
+A kernel-space thread gets its own CPU time because it is scheduled directly by the OS.
+A user-space thread does not get separate CPU time — it shares the CPU time given to its process.
+```
+## 14 A kernel-space thread gets its own CPU time because it is scheduled directly by the OS. A user-space thread does not get separate CPU time — it shares the CPU time given to its process.
+```
+A kernel-space thread gets its own CPU time because it is scheduled directly by the OS.
+A user-space thread does not get separate CPU time — it shares the CPU time given to its process.
+```
+## 15 Explain POSIX and system-v difference?
+```
+| POSIX                            | System-V                              |
+| -------------------------------- | ------------------------------------- |
+| It is a portability standard     | It is a UNIX operating system variant |
+| Defines how APIs should behave   | Defines how System-V UNIX behaves     |
+| Portable across systems          | Specific to System-V family           |
+| POSIX IPC: pthreads, mutex, mmap | System-V IPC: msgget, semget, shmget  |
+| Modern and widely used           | Older, legacy style                   |
+```
+## 16 .what are the points to remember when mutex locks are used to protect the critical section?
+```
+1. Always lock the mutex before entering the critical section
+2. Always unlock the mutex after leaving the critical section
+3. Only one thread can hold the mutex at a time
+4. Do not hold the mutex longer than necessary
+5. Avoid calling sleep(), I/O, or blocking operations while holding the mutex
+6. Always ensure the mutex is unlocked even if an error occurs
+7. Locking order must be consistent to avoid deadlock
+8. Shared data must only be accessed when mutex is locked.
+
+Lock before accessing shared data, unlock after, and avoid deadlocks.
+
+```
+## 17 By using mutex_lock what you are acheiving?
+```
+
+
