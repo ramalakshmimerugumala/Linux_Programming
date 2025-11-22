@@ -117,5 +117,19 @@ Lock before accessing shared data, unlock after, and avoid deadlocks.
 ```
 ## 17 By using mutex_lock what you are acheiving?
 ```
+mutex_lock gives mutual exclusion — one thread at a time.
+```
+## 18 .Difference between mutex locks and semaphore?
+```
+| **Mutex**                                              | **Semaphore**                                               |
+| ------------------------------------------------------ | ----------------------------------------------------------- |
+| Used when **only one thread** should access a resource | Used when **multiple threads** can access a resource        |
+| Has **ownership** – the same thread must unlock it     | **No ownership** – one thread can lock, another can unlock  |
+| Always **binary (1 or 0)**                             | Can be **binary or counting** (0 to N)                      |
+| Used mainly for **mutual exclusion**                   | Used mainly for **synchronization and resource management** |
+| Simpler to use                                         | Slightly more complex                                       |
+| Example: one bathroom key shared among people          | Example: parking lot with limited number of slots           |
+```
+## 19 
 
 
