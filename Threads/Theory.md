@@ -130,6 +130,92 @@ mutex_lock gives mutual exclusion — one thread at a time.
 | Simpler to use                                         | Slightly more complex                                       |
 | Example: one bathroom key shared among people          | Example: parking lot with limited number of slots           |
 ```
-## 19 
-
+## 19 .Explain the variants of pthread_mutex_lock?
+```
+1) pthread_mutex_lock()
+What it does
+Blocks the calling thread until the mutex becomes available, then locks it.
+After this call returns 0, the calling thread owns the mutex and must call pthread_mutex_unlock().
+Typical return values
+0 — success (lock acquired)
+EDEADLK — deadlock detected (with error-checking mutex)
+EINVAL — mutex not initialized or invalid
+2)pthread_mutex_trylock()
+What it does
+Attempts to lock the mutex without blocking.
+If the mutex is free, it acquires it and returns success.
+If the mutex is already locked by another thread, it returns immediately with EBUSY.
+Typical return values
+0 — success (lock acquired)
+EBUSY — mutex already locked (no wait)
+EINVAL — mutex invalid/not initialized
+3) pthread_mutex_timedlock()
+What it does
+Attempts to lock the mutex, blocking up to a specified absolute timeout (a struct timespec).
+If lock becomes available before the timeout, it acquires and returns success.
+If the timeout expires before the lock is acquired, it returns ETIMEDOUT.
+Typical return values
+0 — success (lock acquired)
+ETIMEDOUT — timeout expired (lock not acquired)
+EINVAL — invalid mutex or invalid abstime
+```
+## 20 .Explain the compilation of a thread?
+```
+Thread programs compile like normal C programs, but since they use pthreads,
+we must link the pthread library. So we compile using:
+gcc program.c -o program -pthread
+```
+## 21 what are the arguments of pthread_create?
+```
+int pthread_create(
+    pthread_t *thread,          // 1. Thread identifier
+    pthread_attr_t *attr,       // 2. Thread attributes (or NULL)
+    void *(*start_routine)(void*), // 3. Function the thread will run
+    void *arg                   // 4. Argument passed to that function
+);
+```
+## 22.Explain the return value of thread?
+```
+A thread returns a value of type void* and another thread can collect it using
+pthread_join(). If the thread does not return anything, the return value is NULL.
+```
+## 23 .Explain the working of pthread_mutex_trylock()?
+```
+pthread_mutex_trylock() is a non-blocking version of pthread_mutex_lock().
+How it works
+It tries to acquire the mutex.
+If the mutex is unlocked, it successfully locks it and the thread enters the critical section.
+If the mutex is already locked by another thread, it does NOT wait.
+Instead, it immediately returns with an error.
+| Condition                        | Return Value |
+| -------------------------------- | ------------ |
+| Mutex was free and lock acquired | `0`          |
+| Mutex was already locked         | `EBUSY`      |
+Why it is used
+Used for testing availability of critical section
+Used when thread should not block or wait
+Useful in:
+✅ real-time systems
+✅ periodic checks
+✅ avoiding deadlocks
+✅ responsive applications
+```
+## 24 Explain the application of pthread_mutex_timelock()?
+```
+pthread_mutex_timedlock() is used when a thread needs to try acquiring a mutex
+but should only wait up to a specified timeout. If the mutex is not released
+before the timeout, it returns ETIMEDOUT. It is useful in real-time and
+responsive applications to avoid blocking indefinitely.
+1. When you don’t want a thread to wait forever
+If the lock is busy, the thread waits only for some time and then continues.
+2. To avoid program hanging or freezing
+Useful so the program keeps running instead of getting stuck.
+3. In time-critical work
+If something must happen within a fixed time, and cannot wait too long.
+4. When checking a shared resource periodically
+If the lock is not free, the thread can try again later.
+```
+## 25 what is mutual exclusion?
+```
+Mutual exclusion means that only one thread or process is allowed to enter the critical section at a time, so that shared data is not changed by multiple threads simultaneously.
 
