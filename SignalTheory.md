@@ -36,15 +36,15 @@ Unexpected behavior – interrupts may occur at any time and break normal flow.
 Deadlocks – if an interrupt tries to access a locked resource.
 Performance overhead – too many interrupts can slow down the system.
 ```
-## 3.What is synchronous signal and asynchronous signal and how the process can be used for both?
-Synchronous Signal
+# 3.What is synchronous signal and asynchronous signal and how the process can be used for both?
+### Synchronous Signal
 A synchronous signal happens because of the process’s own action (its own mistake).
 It occurs immediately at the point of error.
 Example:
 SIGFPE → division by zero
 SIGSEGV → invalid memory access
 The signal is tied to the instruction the process executed
-Asynchronous Signal
+### Asynchronous Signal
 An asynchronous signal comes from outside the process.
 It can happen at any time, not because of the process’s current instruction.
 Examples:
