@@ -148,6 +148,8 @@ Process 2 sends a timeout signal
 
 Process 3 sends a failure signal
 
+Individually they look separate, but correlation shows they all happened because one service crashed.
+
 ## 13 Explain how a process handles a signal while it is in the ready state?
 When a process is in the ready state, it is not running, but waiting to be scheduled by the CPU
 
@@ -161,9 +163,103 @@ What Happens?
 
 4️ The signal is then delivered and handled:
 
-Default action OR
+Default action OR Signal handler (if installed).
 
-Signal handler (if installed).
+## 14 What is the role of the sigqueue() function in signal handling?
+sigqueue() is a system call used to send a signal to a process, just like kill(), but with an extra advantage.
 
-## 14
+What makes sigqueue() special?
+
+Unlike kill(), sigqueue() can:
+ Send a signal
+ 
+ Send additional data (a value) along with the signal
+
+So the receiving process not only knows which signal arrived, but also gets some extra information.
+sigqueue(pid, signal_number, value);
+
+## 15.Describe the interaction between signals and IPC mechanisms in Unix-like systems?
+Signals notify events, while IPC transfers data — they work together to coordinate communication between processes.
+
+| **IPC Mechanism**  | **Role of Signals**                                                                  |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| **Pipes / FIFOs**  | **SIGPIPE** is sent when a process writes to a pipe whose reading end is closed.     |
+| **Message Queues** | **SIGIO** can notify a process that new messages are available (async I/O).          |
+| **Shared Memory**  | Signals can be used to **notify other processes** that shared data has been updated. |
+| **Semaphores**     | Signals can **wake up** or notify processes waiting for synchronization.             |
+
+## 16. Explain how a process can determine the priority of a received signal?
+A process determines priority by looking at the signal number — lower numbers mean higher priority, and the OS enforces this order.
+
+Lower signal number = Higher priority
+
+What does the process do?
+
+When a signal comes in, the process can:
+
+Check the signal number (e.g., SIGINT = 2, SIGTERM = 15)
+
+From that number, it knows its priority (because lower = higher)
+
+Signal 2 handled first → higher priority
+
+Signal 15 handled later → lower priority
+
+## 17.What is the role of the sigaltstack() function in signal handling?
+
+What does sigaltstack() do?
+
+It gives the signal handler a backup stack to run on.
+
+Why?
+
+If the normal stack is broken or full, the signal handler might not run.
+So sigaltstack() provides another safe place to run the handler.
+
+sigaltstack() lets a signal handler run on a separate stack so the program can handle signals safely even if the main stack has a problem
+
+## 18.  Explain how a process can determine whether a signal was sent by the kernel or another process?
+A process can know who sent a signal only if it uses sigaction(), because it provides extra information about the signal.
+
+Inside sigaction(), we get siginfo_t
+
+This structure tells us:
+
+1️ If the signal is from the kernel
+
+si_pid == 0
+
+Means the operating system (kernel) sent the signal
+Example: segmentation fault, divide by zero, illegal memory access.
+
+2️ If the signal is from another process.
+
+si_pid > 0
+
+Means another process used kill() or sigqueue() to send the signal The value will be that process's PID.
+
+## 19. Describe the interaction between signals and system calls in Unix-like systems?
+Signals can interrupt system calls while they are waiting, causing them to stop early or restart.
+
+EX:  You are waiting for input using read()
+
+If you press Ctrl+C (SIGINT):
+
+The signal interrupts read()
+read() ends early instead of waiting
+
+## 20.How does a process handle a signal while it is waiting for a semaphore?
+Process waits on semaphore → blocked.
+
+Signal arrives → interrupts the wait.
+
+Semaphore call returns -1 with EINTR.
+
+Signal handler runs.
+
+Process can try semaphore again
+
+## 21.
+
+
 
