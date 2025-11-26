@@ -37,15 +37,13 @@ Deadlocks – if an interrupt tries to access a locked resource.
 Performance overhead – too many interrupts can slow down the system.
 ```
 ## 3.What is synchronous signal and asynchronous signal and how the process can be used for both?
-```
-An asynchronous signal comes from outside the process.
-It can happen at any time, not because of the process’s current instruction.
-Examples:
-SIGINT → user presses Ctrl+C
-SIGTERM → another process sends kill
-SIGCHLD → child process ends.
-How the process uses it?
-The process can handle it using a signal handler (like sigaction), or if not handled, it usually gets terminated.
+Synchronous Signal
+A synchronous signal happens because of the process’s own action (its own mistake).
+It occurs immediately at the point of error.
+Example:
+SIGFPE → division by zero
+SIGSEGV → invalid memory access
+The signal is tied to the instruction the process executed
 Asynchronous Signal
 An asynchronous signal comes from outside the process.
 It can happen at any time, not because of the process’s current instruction.
@@ -59,7 +57,6 @@ The process can install a handler to catch the signal and decide what to do (ign
 | ---------------- | -------------------------- | --------------- | --------------------------- |
 | **Synchronous**  | Process’s own action/error | SIGFPE, SIGSEGV | At the faulting instruction |
 | **Asynchronous** | External events            | SIGINT, SIGTERM | Anytime                     |
-```
 ## 4.Who is responsible for generating signals?
 ```
 The Kernel (Operating System)
