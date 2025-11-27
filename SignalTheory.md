@@ -388,9 +388,419 @@ The signal handler also tries to use or change the same data,
 
 The final result becomes wrong or corrupted because both run unexpectedly.
 ## 28 Discuss how a deadlock situation can be caused or resolved by signal handling?
+### How signals CAUSE deadlock?
+
+A signal can cause deadlock when:
+
+The main program holds a lock (mutex/semaphore)
+
+A signal arrives
+
+The signal handler tries to take the same lock
+
+Since the lock is already held → handler waits forever → deadlock
+
+### How signals RESOLVE deadlock?
+
+Signals like SIGALRM can break a deadlock by:
+
+Interrupting a blocked system call (I/O, sem_wait)
+
+The call returns with EINTR
+
+The process can retry or exit → avoids infinite waiting.
+
+## 29 How can you use signals to force a process to dump core?
+Use SIGQUIT or SIGABRT to force a core dump
+
+To make a process dump core, send one of these signals:
+
+SIGABRT → always creates a core dump
+
+SIGQUIT → also creates a core dump
+
+## 30 What are the implications of using longjmp() and setjmp() in signal handlers?
+Using setjmp/longjmp in signal handlers is dangerous because it breaks normal flow, skips clean-up, and can corrupt program state.
+
+Implications of using setjmp()/longjmp() in signal handlers
+
+## Program flow breaks suddenly
+longjmp() jumps out of the handler suddenly → normal code does not finish properly.
+
+## Locks stay locked
+If the main program was holding a lock, longjmp() skips the unlock → causing deadlock.
+
+## Not safe to use in handlers
+longjmp() is not safe inside signal handlers → can make the program behave wrongly.
+
+## 31 Difference between termination and suspending of a signa
+### Termination
+
+The process is completely stopped and removed from memory.
+
+Example signals: SIGKILL, SIGTERM, SIGSEGV.
+
+Process cannot continue again.
+
+### Suspending
+
+The process is paused (stopped) but not removed.
+
+Example signal: SIGSTOP.
+
+It can be continued later using SIGCONT.
 
 
+Termination = process ends forever
+Suspending = process pauses temporarily and can resume later.
+
+## 32 How CPU access the device register?
+CPU does NOT talk to the device directly. It accesses device registers through the device driver.
+
+Steps:
+
+Device driver knows the register address (memory-mapped I/O)
+
+Driver uses read/write instructions →
+*(volatile uint32_t *)address = value;
+
+CPU then accesses that address and communicates with the device.
+
+## 33 what is IRQ line?
+IRQ = Interrupt Request Line
+
+It is a wire used by a device to tell the CPU:
+
+"Hey CPU, I need your attention!"
+
+Each device has its own IRQ number.
+
+When a device uses this line, the CPU stops its work and runs the ISR (Interrupt Service Routine).
+
+IRQ line = hardware line that lets devices interrupt the CPU.
+
+## 34 How do you find out unique value for each IRQ line?
+You can find the IRQ number in:
+
+ Device datasheet
+ 
+ Hardware manual / board manual
+ 
+ SoC reference manual
+ 
+ Interrupt controller (GIC/PIC) documentation
+
+These documents tell you the IRQ number assigned to each peripheral.
+
+## 35 when interrupt occurs?
+An interrupt occurs when:
+
+A peripheral device needs CPU attention (e.g., keyboard key pressed, data ready, error).
+
+A timer or internal event signals the CPU.
+
+A software request asks the CPU to stop current work and handle something urgent.
+
+Interrupt = CPU is alerted because something needs immediate attention.
+
+## 36. when are exceptions when they occur?
+When do exceptions occur?
+
+Exceptions occur inside the CPU when the processor detects an unexpected or illegal condition during instruction execution, such as:
+
+Division by zero
+
+Invalid memory access (segmentation fault)
+
+Arithmetic overflow
+
+Invalid opcode
+
+## 37 How does kernel informs to the parent that it(child) process is terminated?
+When a child process terminates, the kernel sends a SIGCHLD signal to the parent.
+
+The parent can handle it using:
+
+A signal handler for SIGCHLD, or
+
+wait() / waitpid() system call to get the child’s exit status.
+
+## 38. Which member of PCB contains the information about the signals?
+PCB members related to signals
+
+Signal disposition table → stores what to do for each signal (default, ignore, or handler).
+
+Pending signal info → stores signals that have arrived but not yet handled.
+
+Signal mask → stores signals that are currently blocked.
+
+## 39How can we replace SIGDEL with SIGING 40. (or) 41. How do you modify signal behaviour table/signal disposition
+Use signal() or sigaction() to modify the signal disposition table for any signal.
+
+signal(SIGINT, my_handler);   // Replace default SIGINT action
+
+struct sigaction act;
+act.sa_handler = my_handler;
+sigemptyset(&act.sa_mask);
+act.sa_flags = 0;
+sigaction(SIGINT, &act, NULL);  // Replace SIGINT behaviour
+
+## 42. why crash in program occurs?
+Crash occurs when the program does something illegal.
+Very simple reasons:
+
+## Accessing invalid memory
+
+Example: dereferencing NULL pointer, buffer overflow.
+
+Dividing by zero
+
+Causes SIGFPE.
+
+## Using uninitialized pointers/variables
+
+Points to garbage memory → crash.
+
+Stack overflow
+
+Too much recursion.
+
+## Illegal instructions
+
+Executing corrupted code.
+
+## Race conditions
+
+Two threads modifying memory → corruption → crash.
 
 
+** Program crashes when it touches bad memory or performs illegal operations.
 
+## 43 . How do you install signal handler in signal disposition table from user space?
+User installs a signal handler using signal() or sigaction(). These update the signal disposition table in the PCB
+
+## 44 How do you catch signal?
+To catch a signal:
+
+Write a handler function
+```
+void handler(int signo) {
+    printf("Caught signal %d\n", signo);
+}
+```
+
+Register it using signal() or sigaction()
+
+This tells the kernel:
+
+ When this signal comes, call my handler instead of default action
+
+ You catch a signal by registering a handler using signal() or sigaction().
+
+ ## 45. What does header file contains?
+ A header file contains:
+
+Function declarations
+
+Macros
+
+Structure definitions
+
+Constant definitions
+
+Type definitions.
+
+<signal.h> contains signal numbers, signal handler function declarations, structures for signal handling, and macros like SIG_DFL and SIG_IGN.
+
+## 46 How do you clear the content of sa_mask?
+Use sigemptyset() to clear the sa_mask.
+
+sigemptyset(&act.sa_mask);
+
+It removes all signals from the mask → mask becomes empty.
+
+## 47 Why signals are needed to be blocked?
+Why signals need to be blocked?
+
+Signals are blocked to prevent them from interrupting critical code.
+
+ reasons:
+
+To protect critical section → avoid corruption.
+
+To avoid race conditions.
+
+To delay signal handling until the program is in a safe state.
+
+Block signals when you don’t want them to interrupt important work.
+
+## 48. Signal no 2's corresponding bit is set to 1? what do you meant by it?
+Each signal has a bit position in the pending signal bitmask or signal mask.
+
+If the bit = 1 → the signal is pending or blocked.
+
+If the bit = 0 → the signal is not pending / not blocked.
+
+Signal 2’s bit is 1” means:
+
+Signal number 2 (SIGINT) has arrived and is waiting to be handled (pending).
+
+## 49.How can we see the blocking signal information in PC?
+Use ps or /proc/<pid>/status to see blocked signal mask of a process.
+
+1. ps command
+   
+ps -o pid,blocked -p <pid>
+
+
+blocked column shows the signal mask in hex.
+
+2. /proc/<pid>/status file
+
+cat /proc/<pid>/status
+
+Look for:
+
+SigBlk → blocked signals
+
+SigIgn → ignored signals
+
+SigCgt → signals with custom handlers
+
+SigPnd → pending signals
+
+## 50. How do I get access to some information present in kernel space?
+You CANNOT directly access kernel space from user space.Because the OS protects kernel memory for safety.
+
+But you CAN get kernel information in these safe ways:
+
+## Use System Calls
+
+System calls are the only legal way for user programs to ask the kernel for information.
+
+Examples:
+
+getpid() → get process ID
+
+kill() → send signal
+
+read() / write() → access files
+
+signal() / sigaction() → get/set signal info
+
+## Use /proc File System (Linux only)
+
+Kernel exposes information through files in /proc.
+
+Examples:
+
+/proc/cpuinfo → CPU info
+
+/proc/meminfo → RAM info
+
+/proc/<pid>/status → process info
+
+/proc/<pid>/task/<tid>/status → thread info
+
+/proc/<pid>/status has SigBlk, SigIgn, SigCgt (signal info).
+
+## 3. Use sysfs (/sys)
+
+For device and driver information.
+
+Example:
+
+/sys/class/net/ → network devices
+
+/sys/block/ → block devices
+
+##  4. Write Kernel Module (advanced)(This is done usually by driver developers.)
+
+If you need custom access, you write a kernel module and expose data via:
+
+/proc
+
+/sys
+
+IOCTL calls
+
+## 51 During the execution of signal handler, other than default signal. Can you block additional signal?
+Inside struct sigaction, the field sa_mask allows you to block extra signals while the handler is running.
+
+By using sigaction we can block multiple signals using sigaddset
+```
+struct sigaction act;
+act.sa_handler = myhandler;
+sigemptyset(&act.sa_mask);          // clear mask
+sigaddset(&act.sa_mask, SIGTERM);   // block SIGTERM
+sigaddset(&act.sa_mask, SIGUSR1);   // block SIGUSR1
+sigaction(SIGINT, &act, NULL);
+```
+When the SIGINT handler runs,
+
+ SIGTERM and SIGUSR1 will be blocked automatically.
+ 
+ They will execute only after the handler finishes.
+
+ ## 52.Explain the scenario where signal is blocked?
+
+ ## 53 From user space application can you access (Read/write) signal mask present in your PCB?
+ Yes, indirectly.
+
+sigprocmask() → block or unblock signals
+
+pthread_sigmask() → block/unblock signals in threads
+
+sigpending() → see pending signals.
+
+## 54 Where is the process information present?
+Process information is stored in the kernel, specifically in the Process Control Block (PCB).
+
+PCB contains:
+
+Process ID, state, priority
+
+CPU registers, program counter
+
+Memory management info
+
+Signal info, open files, etc.
+
+## 55 From userspace how do I access PCB information present in kernel space?
+ou cannot access PCB directly from user space. ✅
+
+You can only get information indirectly using system calls like:
+
+getpid(), getppid() → process IDs
+
+getpriority() → process priority
+
+wait(), waitpid() → child status
+
+sigprocmask(), sigpending() → signal info.
+
+User space → system calls → kernel → PCB info
+
+## 56  Can you create a proc virtual file system entry as user?
+
+No , a regular user cannot create /proc entries.
+
+Only the kernel or kernel modules can create entries in the /proc virtual file system.
+
+User-space programs can read/write existing /proc files (if permissions allow), but cannot create new ones.
+
+/proc entries = kernel-only; users can only access existing files.
+
+## 57 Without sending a signal can you invoke mysighand?
+Yes , you can invoke your signal handler like a normal function from your program.
+```
+void mysighandler(int signo){
+    printf("Signal %d caught\n", signo);
+}
+
+int main() {
+    mysighandler(SIGINT);  // Called directly without sending a signal
+}
+```
+Signal handler can be called directly like any other function, no signal needed.
 
