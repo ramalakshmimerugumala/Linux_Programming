@@ -259,7 +259,113 @@ Signal handler runs.
 
 Process can try semaphore again
 
-## 21.
+## 21.Describe the difference between a signal handler and a signal mask?
+Signal handler = what action to perform.
+
+Signal mask = which signals are blocked from interrupting
+
+| Feature     | Signal Handler          | Signal Mask                   |
+| ----------- | ----------------------- | ----------------------------- |
+| What is it? | A function              | A block list                  |
+| Purpose     | Handle the signal       | Block/delay signals           |
+| When used?  | When signal arrives     | Before signal arrives         |
+| Effect      | Replaces default action | Prevents delivery temporarily |
+
+## 22 How does a process handle a signal while it is in the zombie state?
+
+A zombie is a process that has:
+
+Finished execution But still has an entry in the process table Waiting for the parent to call wait() to collect its exit status It is NOT running anymore.
+
+A zombie process cannot handle signals because it is already dead and not running; only the parent can clean it up using wait().
+
+## 23  What are the advantages and disadvantages of using signals for interprocess communication?
+Signals are simple and fast for alerts, but they can’t send much information and may make the program harder to manage.
+
+Advantages (Good Things)
+ 1️ Easy to use
+
+Just send a signal — no big setup.
+
+2️ Fast notification
+
+The other process gets alerted immediately.
+
+3️ Works even if processes don't share data
+
+They don’t need shared memory, pipes, etc.
+
+ 4️ Good for alerts
+
+Like:
+
+process finished
+
+process should stop or continue
+
+Disadvantages (Bad Things)
+1️ Can’t send much information
+
+A signal only says “something happened”, nothing more.
+
+ 2️ Can interrupt the program
+
+Makes the code harder because the signal can come anytime.
+
+3️ Order is not guaranteed
+
+Signals may arrive out of order.
+
+4️ Not good for big communication
+
+You can’t send large data, only a small notification.
+
+## 24 Explain how a process handles a signal while it is in a sleep state
+Signals wake sleeping processes because the kernel interrupts their sleep and delivers the signal.
+
+What happens?
+
+ ### The sleep is interrupted
+
+The process wakes up immediately, even if the sleep time is not finished.
+
+ ### The signal handler runs
+
+If a custom handler is installed, that function executes.
+
+ ### After handling:
+
+Two possibilities:
+
+ A. Sleep ends permanently
+The system call returns early with an error (EINTR).
+
+ B. Sleep restarts
+If configured to restart (using flags like SA_RESTART), the sleep continues.
+
+## 25 How does a process handle a signal while it is in a critical section?
+Signal arrives → Stored as pending → Critical section finishes → Signal is handled.
+
+1️ Signal arrives
+
+The process is busy in a critical section.It cannot be interrupted. So the signal is not handled immediately.
+
+2️ Signal becomes pending
+
+The signal is stored in the pending signal list.It waits there.It is not lost.
+
+3️ Process finishes the critical section
+
+Now signals are unblocked.The process is safe to interrupt.
+
+4️ Signal handler runs
+
+The pending signal is delivered.The signal handler executes.
+
+## 26.
+
+
+
 
 
 
