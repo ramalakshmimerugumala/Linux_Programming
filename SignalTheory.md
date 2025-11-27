@@ -362,7 +362,32 @@ Now signals are unblocked.The process is safe to interrupt.
 
 The pending signal is delivered.The signal handler executes.
 
-## 26.
+## 26.What are some of the challenges associated with signal handling in multi-threaded programs?
+Hard to decide which thread should get the signal
+
+ Signals may interrupt important work
+
+ Can cause deadlocks
+
+ Handlers must be very simple
+
+ Hard to debug
+
+ Each thread has different signal masks.
+ 
+ ## 27.What is a race condition? Explain how it might occur in the context of signals?
+Race condition:
+
+A race condition happens when:
+
+The main program is updating some data,
+
+At the same time a signal arrives,
+
+The signal handler also tries to use or change the same data,
+
+The final result becomes wrong or corrupted because both run unexpectedly.
+## 28 Discuss how a deadlock situation can be caused or resolved by signal handling?
 
 
 
