@@ -743,6 +743,40 @@ When the SIGINT handler runs,
  They will execute only after the handler finishes.
 
  ## 52.Explain the scenario where signal is blocked?
+ Signals get blocked in three ways:
+
+Signal blocks itself while its handler is executing.
+
+Additional signals blocked inside handler using sa_mask.
+
+Signals manually blocked by the process using sigprocmask()
+
+ 1.A signal blocks itself during its own handler execution (default behavior)
+
+ When a signal handler is running, the same signal is automatically blocked until the handler finishes.
+
+Example:
+If SIGINT handler is running → another SIGINT will be blocked (queued or discarded depending on type).
+
+2️ Additional signals can be blocked inside a handler using sa_mask (sigaction)
+
+Using sigaction(), you can specify extra signals to block while a particular handler is running.
+```
+sigemptyset(&act.sa_mask);
+sigaddset(&act.sa_mask, SIGTERM);  // block SIGTERM while handling SIGINT
+```
+So when the SIGINT handler runs → SIGTERM is blocked.
+
+3️ A signal can be blocked manually from userspace (no handler needed)
+
+Using sigprocmask(), a process can block signals at any time.
+```
+sigset_t set;
+sigemptyset(&set);
+sigaddset(&set, SIGINT);
+sigprocmask(SIG_BLOCK, &set, NULL);   // block SIGINT
+```
+Even if no handler exists, SIGINT will not be delivered until unblocked.
 
  ## 53 From user space application can you access (Read/write) signal mask present in your PCB?
  Yes, indirectly.
