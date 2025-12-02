@@ -195,5 +195,97 @@ shmat() (sometimes blocking)
 
 Waits while attaching a shared memory segment if required resources are not available.
 
-## 11.
+## 11. What is meant by Named Pipes?
+Named pipes are used for communication between two processes, even if they are unrelated.
+
+Data can flow one way or two ways.
+
+They have a name in the file system, so any process knowing the name can use it to send or receive data.
+
+## 12 Where is the FIFO Object created?
+A FIFO (Named Pipe) object is created in the file system.
+
+It appears as a special file.
+
+Any process can use this file name to communicate.
+
+Created using the system call:
+
+mkfifo("filename", permissions);
+
+## 13 What is the call used to create a FIFO Object? 
+mkfifo("filename", permissions);
+
+## 14 What are the Blocking Calls used in Named Pipes?
+Blocking Calls Used in Named Pipes
+
+open()
+
+If a process tries to open a named pipe for reading, it waits (blocks) until another process opens it for writing.
+
+read()
+
+If there is no data in the named pipe, the process waits (blocks) until data becomes available.
+
+## 15 Why read system calls acts as a blocking call?
+When a process calls read() to read from a pipe, named pipe, or message queue, it waits until data is available.
+
+If there is no data, the process cannot continue and stays blocked.
+
+This is why read() is called a blocking call.
+## 16 Difference between the Named Pipes and Pipes?
+| Feature            | **Pipe**                                       | **Named Pipe (FIFO)**                    |
+| ------------------ | ---------------------------------------------- | ---------------------------------------- |
+| **Processes**      | Only **related processes** (parent-child)      | **Related or unrelated processes**       |
+| **Existence**      | **Temporary**, exists only while processes run | **Permanent**, exists in **file system** |
+| **Identification** | No name, identified by pipe descriptor         | Has a **name in the file system**        |
+| **Direction**      | Usually **one-way**                            | Can be **one-way or two-way**            |
+| **Creation**       | Using `pipe()` system call                     | Using `mkfifo()` system call             |
+
+## 17 What is return value of read system call?
+Return Value of read() System Call
+
+The read() system call returns:
+
+Number of bytes actually read
+
+If data is available, it returns the count of bytes read.
+
+0
+
+Indicates end of file (EOF) or no more data to read.
+
+-1
+
+Indicates an error occurred (e.g., invalid file descriptor).
+## 18 . What is meant by message queue?
+A Message Queue is an IPC mechanism that allows processes to send and receive messages in a queue.
+
+Messages are stored in first-in, first-out (FIFO) order.
+
+Processes can send messages to the queue (msgsnd()) and receive messages from the queue (msgrcv()).
+
+Useful when processes need to exchange structured data.
+## 19 Why we use message queues? 
+Message queues are used to allow processes to communicate and exchange data safely and efficiently.
+
+Process Communication – Allows processes to send and receive messages.
+
+Asynchronous Communication – Sender and receiver do not need to run at the same time.
+
+Data Organization – Messages are stored in a queue (FIFO), ensuring order.
+
+Safe Sharing – Avoids direct access to each other’s memory.
+
+Structured Data – Can send structured messages instead of just bytes.
+## 20 What is difference between Named Pipe and Message Queue? 
+| Feature           | **Named Pipe (FIFO)**                             | **Message Queue**                                           |
+| ----------------- | ------------------------------------------------- | ----------------------------------------------------------- |
+| **Communication** | Used to **send data bytes** between processes     | Used to **send/receive structured messages**                |
+| **Processes**     | Can be **related or unrelated**                   | Can be **related or unrelated**                             |
+| **Persistence**   | Exists as a **file in file system**               | Exists **in kernel memory**                                 |
+| **Order**         | Data flows **in order written**, no message types | Messages stored in **queue with types**, can be prioritized |
+| **Blocking**      | `read()` and `write()` may block                  | `msgsnd()` and `msgrcv()` may block                         |
+| **Data Handling** | Works like a **stream of bytes**                  | Works like **messages with defined structure**              |
+
 
