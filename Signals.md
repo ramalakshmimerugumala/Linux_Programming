@@ -181,7 +181,90 @@ int main(){
  }
 }
 ```
+## 7.Create a program to handle the SIGILL signal (illegal instructio
+```
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+void handler(int signo){
+ printf("%d ",signo);
+}
+int main(){
+ signal(SIGILL,handler);
+ printf("raising SIGILL\n");
+ raise(SIGILL);
+ while(1){
+   printf("Sleeping..\n");
+   sleep(1);
+}
+}
+```
+## 8.Implement a program to handle the SIGSEGV signal (segmentation fault)
+```
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+void sighandler(int signo){
+  printf("caught signal=%d",signo);
+}
+int main(){
+struct sigaction act;
+act.sa_handler=sighandler;
+act.sa_flags=0;
+sigemptyset(&act.sa_mask);
+sigaction(SIGSEGV,&act,NULL);
+  int *ptr=NULL;
+   *ptr=10;
+  sleep(5);
+}
+```
+## 9.Write a program to handle the SIGABRT signal (abort).
+```
+#include <unistd.h>
+#include <stdio.h>
+#include <signal.h>
+#include <stdlib.h>
+void sighandler(int signo){
+    printf("Caught SIGABRT: %d\n", signo);
+    _exit(1);
+}
+int main() {
+    struct sigaction act;
+    act.sa_handler = sighandler;
+    act.sa_flags = 0;
+    sigemptyset(&act.sa_mask);
+    sigaction(SIGABRT, &act, NULL);
+    printf("About to raise SIGABRT...\n");
+    sleep(1);
+    abort();
+    printf("This line will never execute.\n");
+    return 0;
+}
+```
+## 10.   Implement a C program to handle the SIGQUIT signal 
+```
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+void sighandler(int signo){
+    printf("Caught SIGQUIT: %d\n", signo);
+}
+int main() {
+    struct sigaction act;
+    act.sa_handler = sighandler;
+    act.sa_flags = 0;
+    sigemptyset(&act.sa_mask);
+    sigaction(SIGQUIT, &act, NULL);
+    printf("Running program. Press Ctrl + \\ to send SIGQUIT.\n");
+    while(1){
+        printf("Sleeping..\n");
+        sleep(2);
+    }
 
+    return 0;
+}
+```
+## 11.
 
 
 
