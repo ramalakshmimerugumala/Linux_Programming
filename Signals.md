@@ -463,4 +463,107 @@ int main() {
     return 0;
 }
 ```
+## 20.. Implement a program to handle the SIGUSR1_SIGUSR2 signal (user-defined signal).
+```
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+void myhandler(int signo){
+ if(signo==SIGUSR1){
+         printf("Received USR1 signal \n");
+ }
+ if(signo==SIGUSR2){
+         printf("Received USR2 signal\n");
+}
+}
+int main(){
+signal(SIGUSR1,myhandler);
+signal(SIGUSR2,myhandler);
+while(1){
+        printf("HEllo.\n");
+        sleep(1);
+}
+}
+```
+## 21 . Create a C program to handle the SIGCONT_SIGSTOP signal (continue or stop executing).
+```
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+void handler(int signo) {
+    if (signo == SIGCONT) {
+        printf("Received SIGCONT → Process continued!\n");
+    }
+}
+int main() {
+    signal(SIGCONT, handler);
+    printf("Program running... PID = %d\n", getpid());
+    printf("You can stop using: kill -STOP %d\n", getpid());
+    printf("You can continue using: kill -CONT %d\n", getpid());
+    while (1) {
+        printf("Working...\n");
+        sleep(2);
+    }
 
+    return 0;
+}
+```
+## 22 Write a program to demonstrate how to block signals using sigprocmask()
+```
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+void handler(int signo){
+        printf("Caught signal=%d\n",signo);
+}
+int main(){
+sigset_t set;
+sigemptyset(&set);
+sigaddset(&set,SIGINT);
+if(sigprocmask(SIG_BLOCK,&set,NULL)==-1){
+        perror("sigprocmask");
+        return 1;
+}
+printf("SigTerm is blocked.");
+while(1){
+ printf("Sleeping..\n");
+ sleep(1);
+}
+}
+```
+## 23  Write a program to implement a timer using signals.
+```
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+void handler(int signo){
+        printf("%d",signo);
+        //alarm(5);
+}
+int main(){
+ signal(SIGALRM,handler);
+ alarm(5);
+ printf("Time expies..");
+ while(1){
+   printf("Timer.\n");
+   sleep(1);
+ }
+}
+```
+## 24 Why we use raise system call explain it programmatically
+```
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+void handler(int signo) {
+    printf("Caught signal = %d\n", signo);
+}
+int main() {
+    signal(SIGUSR1, handler);
+    printf("I am going to raise SIGUSR1...\n");
+    raise(SIGUSR1);
+    printf("Signal handled successfully!\n");
+    return 0;
+}
+```
+## 25 
