@@ -551,6 +551,7 @@ int main(){
 }
 ```
 ## 24 Why we use raise system call explain it programmatically
+raise() is used to send a signal to the same process itself.
 ```
 #include <stdio.h>
 #include <signal.h>
@@ -566,4 +567,21 @@ int main() {
     return 0;
 }
 ```
-## 25 
+## 25 Write a c program on pause system call
+```
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+void handler(int signo) {
+    printf("Signal received = %d\n", signo);
+}
+int main() {
+    signal(SIGUSR1, handler);
+    printf("Program waiting... PID = %d\n", getpid());
+   // printf("Send signal using: kill -10 %d\n", getpid());
+    pause();
+    printf("Program resumed after signal.\n");
+    return 0;
+}
+```
+## 26 
