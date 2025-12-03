@@ -278,6 +278,7 @@ Data Organization – Messages are stored in a queue (FIFO), ensuring order.
 Safe Sharing – Avoids direct access to each other’s memory.
 
 Structured Data – Can send structured messages instead of just bytes.
+
 ## 20 What is difference between Named Pipe and Message Queue? 
 | Feature           | **Named Pipe (FIFO)**                             | **Message Queue**                                           |
 | ----------------- | ------------------------------------------------- | ----------------------------------------------------------- |
@@ -287,5 +288,38 @@ Structured Data – Can send structured messages instead of just bytes.
 | **Order**         | Data flows **in order written**, no message types | Messages stored in **queue with types**, can be prioritized |
 | **Blocking**      | `read()` and `write()` may block                  | `msgsnd()` and `msgrcv()` may block                         |
 | **Data Handling** | Works like a **stream of bytes**                  | Works like **messages with defined structure**              |
+
+## 21.What is the system call used to create the message queue? 
+int msgget(key_t key, int msgflg);
+
+msgget() is used for:
+
+Creating a new message queue
+
+Accessing an existing message queue.
+
+//key_t key = ftok("file", 65);
+int msgid = msgget(key, 0666 | IPC_CREAT);
+## 22 Where was the message queue created?
+A message queue is created inside the Kernel Space as a kernel object / IPC object.
+
+Kernel maintains message queues using:
+
+Internal data structures
+
+Queue IDs (msgid)
+
+Permissions
+
+Messages stored in kernel memory
+
+| IPC Mechanism     | Created in                  |
+| ----------------- | --------------------------- |
+| **Pipe / FIFO**   | File system + Kernel buffer |
+| **Message Queue** | **Kernel (IPC namespace)**  |
+| **Shared Memory** | Kernel-managed segment      |
+| **Semaphores**    | Kernel                      |
+
+
 
 
