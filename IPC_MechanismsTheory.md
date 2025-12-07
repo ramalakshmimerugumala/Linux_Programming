@@ -300,6 +300,7 @@ Accessing an existing message queue.
 
 //key_t key = ftok("file", 65);
 int msgid = msgget(key, 0666 | IPC_CREAT);
+
 ## 22 Where was the message queue created?
 A message queue is created inside the Kernel Space as a kernel object / IPC object.
 
@@ -319,6 +320,67 @@ Messages stored in kernel memory
 | **Message Queue** | **Kernel (IPC namespace)**  |
 | **Shared Memory** | Kernel-managed segment      |
 | **Semaphores**    | Kernel                      |
+
+## 23 What is meant by Shared Memory?
+Shared Memory means a memory segment that is created in the kernel and can be accessed by multiple processes at the same time.
+
+It is the fastest IPC mechanism because data does NOT need to be copied between processes — all processes directly read/write from the same memory area.
+
+## 24.Why we use Shared Memory?
+In pipes, message queues, etc., data must be copied from one process → kernel → another process.
+This is slow.
+
+In shared memory, both processes directly read/write the same memory area, so zero copying → maximum speed.
+
+## Multiple processes can access the same data
+
+More than two processes can attach the same shared memory segment.
+Useful for:
+
+producer-consumer model
+
+server-client communication
+
+multi-process applications
+
+## Kernel only creates the memory — no involvement later
+
+After creation, the kernel does not participate in data transfer.This reduces overhead.Hence performance is very high.
+
+## 25 Difference between Shared Memory and Message Queues?
+Shared Memory = fastest, direct memory access
+
+Message Queue = safe, structured messaging, but slower
+
+| Feature                  | **Shared Memory**                                             | **Message Queue**                                 |
+| ------------------------ | ------------------------------------------------------------- | ------------------------------------------------- |
+| **Where Data is Stored** | Kernel creates memory segment, accessed directly by processes | Kernel stores messages in queue                   |
+| **Data Transfer**        | **Direct read/write** by processes                            | Processes **send/receive messages**               |
+| **Speed**                | Very fast (no copying)                                        | Slower (data copied between kernel & process)     |
+| **Synchronization**      | Needed (semaphores/mutex) to avoid conflicts                  | Not needed for data safety (kernel handles queue) |
+| **Data Type**            | Raw bytes, can be large buffers                               | Structured messages                               |
+| **Persistence**          | Exists as long as processes are attached                      | Exists in kernel until deleted                    |
+| **Use Case**             | High-speed communication, large data                          | Asynchronous message passing                      |
+
+## 26 What is use of stat command?
+The stat command in Linux/Unix is used to display detailed information about a file or directory.
+
+Information Provided by stat:
+
+File type (regular file, directory, symbolic link, etc.)
+
+File size (in bytes)
+
+Number of links (hard links)
+
+File permissions (read, write, execute)
+
+User ID (UID) and Group ID (GID)
+
+Last access time, modification time, and change time
+
+Inode number
+
 
 
 
