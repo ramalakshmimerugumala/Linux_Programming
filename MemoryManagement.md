@@ -605,6 +605,7 @@ The OS resets the R bit regularly, so it can see which pages were used recently.
 | **1** | 0 | 1 | Not used recently, modified                      |
 | **2** | 1 | 0 | Used recently, not modified                      |
 | **3** | 1 | 1 | Used recently, modified → WORST to remove        |
+
 Advantages
 
 Simple
@@ -727,5 +728,138 @@ Stack overflow
 
 Example: infinite recursion that exceeds stack size.
 
-## 41
+## 41 Explain the concept of segment registers.
+Segment registers store the base addresses of code, data, and stack segments so the CPU can calculate the final physical memory address.
+
+They help in translating logical addresses to physical addresses by combining the base address with the offset.
+
+Formula--Physical Address = Base Address (from segment register) + Offset
+
+## 42 What is a segment table?
+A **segment table** is a data structure used in segmentation.  
+- Each entry holds a **base address** and **limit** of a segment.
+- It helps in converting logical addresses to physical addresses.
+  
+## 43 How does segmentation support protection and sharing of memory?
+# Protection
+
+Each segment has its own permissions (read, write, execute).
+
+This helps the system block illegal access to other segments.
+
+You cannot cross the segment limit, so out-of-range access is prevented
+
+# Sharing
+
+A segment can be shared by allowing multiple processes to access the same segment.
+
+Useful for sharing code segments, libraries, etc.
+
+Saves memory because only one copy is stored.
+
+## 44 Discuss the segmentation with paging approach.
+First, the program is divided into segments (code, data, stack).
+
+Then, each segment is again divided into pages of fixed size.
+
+These pages are stored in RAM using frames, so no external fragmentation happens.
+
+MMU uses a segment table → page table → frame to find the physical address.
+
+Why it is used?
+
+ Reduces fragmentation
+
+ Gives flexibility + protection
+
+ Used in x86 processors and modern OS
+
+ ## 45 Compare and contrast segmentation with paging
+ | Feature              | **Segmentation**                  | **Paging**                           |
+| -------------------- | --------------------------------- | ------------------------------------ |
+| **Unit of division** | Logical units → Code, Data, Stack | Fixed-size blocks → Pages            |
+| **Size**             | Variable size                     | Fixed size (e.g., 4 KB)              |
+| **Fragmentation**    | Causes **external fragmentation** | Causes **internal fragmentation**    |
+| **Address parts**    | Segment number + offset           | Page number + offset                 |
+| **Purpose**          | Matches programmer’s view         | Used for efficient memory usage      |
+| **Protection**       | Easy (segments have permissions)  | Harder (all pages look same)         |
+| **Sharing**          | Easy to share a segment           | Page-level sharing possible but rare |
+| **Implementation**   | Needs segment table               | Needs page table                     |
+
+## 46 Define memory fragmentation
+Memory fragmentation happens when free memory gets split into small pieces, making it hard to allocate a large continuous block of memory—even though total free memory is enough
+## 47 Explain the causes of memory fragmentation
+Causes of Memory Fragmentation (Easy Answer)
+
+1️ Programs start and stop frequently
+
+When programs end, they leave free gaps in memory.
+
+New programs may not fit perfectly into those gaps.
+
+2️ Different (variable) memory request sizes
+
+Some programs need large blocks, some need small.
+
+This uneven usage creates small leftover spaces.
+
+3️ Continuous allocation and deallocation
+
+When memory is repeatedly allocated and freed,
+
+it breaks into many small free pieces → fragmentation
+
+## 48 How does memory fragmentation affect system performance?
+**Slows down memory allocation
+-OS takes more time to search for a free block.
+
+**Reduces usable RAM
+--Lots of small gaps → memory wasted → less space for programs.
+
+**Can cause program failures
+--Even if enough total memory is free, no continuous block may be available.
+
+**Leads to more page faults / disk usage
+-When RAM becomes inefficient, OS swaps more → system becomes slow.
+
+## 49 Discuss the techniques to reduce memory fragmentation.
+1️ Compaction
+
+OS moves memory blocks together
+
+Joins small free gaps into one big free block.
+
+2️ Paging
+
+Fixed-size pages → no external fragmentation.
+
+3️ Segmentation with Paging
+
+Segments + pages → less fragmentation and more flexibility.
+
+4️ Best-fit / First-fit allocation
+
+Smart allocation reduces leftover gaps.
+
+5️ Keeping same-sized memory blocks
+
+Avoids uneven holes.
+
+## 50  Explain compaction as a technique for reducing fragmentation
+Compaction is a technique where the OS moves memory blocks closer together so that all the small free gaps combine into one large free block.
+
+**Why it is used?**
+
+To reduce external fragmentation.
+
+**How it works?**
+
+1️ OS shifts programs in memory to remove gaps.
+
+2️ All empty spaces are brought together into one big continuous space
+
+3️ New programs can now fit easily.
+
+## 51 
+
 
