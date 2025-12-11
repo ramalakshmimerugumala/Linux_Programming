@@ -860,6 +860,159 @@ To reduce external fragmentation.
 
 3️ New programs can now fit easily.
 
-## 51 
+## 51 What is memory compaction?
+Memory compaction is the process of moving memory blocks together so that all small free spaces combine into one big free space
 
+Purpose
 
+To remove external fragmentation
+
+To make continuous free memory available for new programs
+
+## 52 Describe the working of memory compaction algorithms
+Memory compaction algorithms work like this:
+
+1️ Scan the memory
+
+OS looks for used blocks and free holes.
+
+2️ Move allocated blocks together
+
+All active programs are shifted toward one side (usually the start of memory).
+
+3️ Merge all free spaces
+
+The small gaps combine into one large continuous free block.
+
+4️ Update memory addresses
+
+Since programs were moved, their addresses are updated by the OS.
+
+## 53 Discuss the challenges in implementing memory compaction.
+Challenges in Implementing Memory Compaction
+
+1️ Time-consuming
+
+Moving memory blocks takes time and slows the system.
+
+2️ Needs updating addresses
+
+After moving programs, OS must update all pointers → complicated.
+
+3️ Cannot move all memory
+
+Some blocks (like I/O buffers, shared memory) cannot be moved.
+
+4️ CPU overhead increases
+
+Compaction uses CPU cycles, affecting performance.
+
+## 54 . Explain memory fragmentation in the context of embedded systems
+In embedded systems, memory is small and fixed, so fragmentation becomes a serious problem.
+
+**Causes**
+Frequent malloc/free operations
+
+Allocating different-sized memory blocks
+
+Long-running tasks that allocate/deallocate memory
+
+**Impacts**
+Usable memory reduces
+
+Memory allocation becomes slow or may fail
+
+Device may become unstable or crash
+
+**solution**
+
+Use static memory allocation (avoid malloc/free)
+
+Use memory pools of fixed-size blocks
+
+Avoid dynamic allocation during runtime (especially in real-time systems)
+
+## 55  How does memory allocation impact memory fragmentation
+1. Variable-size allocation → causes fragmentation
+
+If programs request different-sized memory blocks, free space gets broken into small pieces → external fragmentation.
+
+2. Frequent allocation/deallocation → increases fragmentation
+
+Many malloc/free operations create gaps in memory.
+
+3. Fixed-size allocation → reduces fragmentation
+
+Using fixed-size blocks (like memory pools) keeps memory neat → less fragmentation.
+
+## 56 Define memory mapping
+Memory mapping is the process of linking a part of virtual memory to physical memory or I/O device addresses.
+
+Purpose
+
+Lets programs access memory or hardware using normal read/write instructions
+
+No need for special I/O instructions
+
+Makes accessing devices and memory easier and faster
+
+## 57 Explain the purpose of memory mapping
+Purpose of Memory Mapping
+
+To let programs access memory and I/O devices using normal load/store instructions
+
+To map virtual addresses to physical addresses
+
+To provide faster and simpler access to hardware
+
+To support virtual memory and process isolation
+
+## 58 Describe the memory mapping techniques.
+1. **Direct Mapping**
+
+Each virtual address is mapped to a fixed physical location.
+
+Very simple but not flexible.
+
+2. **Paged Mapping**
+
+Virtual memory is divided into pages, physical memory into frames.
+
+Page tables decide which page goes to which frame.
+
+Avoids external fragmentation.
+
+3. **Segmented Mapping**
+
+Memory is divided into variable-size segments (code, data, stack).
+
+Each segment has a base (start) and limit (size).
+
+Logical and easy to protect.
+
+4. **Memory-Mapped I/O**
+
+Device registers are treated like memory addresses.
+
+CPU reads/writes to devices using normal memory instructions.
+
+## 59 What is memory-mapped I/O?
+Memory-Mapped I/O (Easy Explanation)
+
+Definition: I/O devices (like LEDs, sensors, displays) are given memory addresses.
+
+How it works: CPU reads/writes to these addresses like normal RAM.
+
+Why use it: No special I/O instructions needed; simple and fast.
+
+Example:
+
+#define LED 0xFF00
+*(volatile int*)LED = 1;  // Turn on LED
+
+## 60 Explain memory-mapped files
+A file on disk is mapped into a process’s memory.
+
+Programs can read/write the file like normal memory.
+
+OS takes care of reading/writing to disk automatically.
