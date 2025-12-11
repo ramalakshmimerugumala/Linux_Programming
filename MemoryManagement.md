@@ -997,7 +997,7 @@ Device registers are treated like memory addresses.
 CPU reads/writes to devices using normal memory instructions.
 
 ## 59 What is memory-mapped I/O?
-Memory-Mapped I/O (Easy Explanation)
+Memory-Mapped I/O 
 
 Definition: I/O devices (like LEDs, sensors, displays) are given memory addresses.
 
@@ -1005,6 +1005,7 @@ How it works: CPU reads/writes to these addresses like normal RAM.
 
 Why use it: No special I/O instructions needed; simple and fast.
 
+It simplifies hardware communication in embedded and system-level programming.
 Example:
 
 #define LED 0xFF00
@@ -1016,3 +1017,124 @@ A file on disk is mapped into a process’s memory.
 Programs can read/write the file like normal memory.
 
 OS takes care of reading/writing to disk automatically.
+
+## 61 Discuss the advantages of memory mapping.
+Memory mapping makes file access fast, simple, and efficient.
+ Faster file access (no need for read/write calls)
+- Easy data sharing between processes
+- Efficient I/O performance
+- Automatic loading and saving by OS
+  
+## 62.What are the drawbacks of memory mapping?
+May cause crashes if file size is too big
+- Needs OS support
+- Less control over when I/O happens
+- Not suitable for real-time systems with strict timing
+
+## 63 How does memory mapping improve performance?
+**Direct memory access**
+→ No need for read()/write() calls.
+→ CPU accesses data like normal memory → faster.
+
+**Less copying**
+→ Data does not move between kernel and user buffers.
+→ Reduces overhead.
+
+**Lazy loading**
+→ OS loads only needed parts of the file → saves time and RAM.
+
+**Automatic caching**
+→ OS keeps frequently used pages in RAM → speed increases.
+## 64.Explain memory-mapped graphics
+The screen is treated like memory.
+
+A special memory area (framebuffer) is linked to the display.
+
+When the CPU writes a value to that memory → the pixel on the screen changes.
+
+Used in embedded devices, games, and displays because it's fast and simple.
+
+## 65.Discuss memory mapping in embedded systems
+In embedded systems, memory mapping is used to connect RAM, ROM, and I/O devices into a single address space.
+
+Every device (sensor, LED, display, etc.) is given a memory address.
+
+The CPU controls devices by reading/writing to these addresses just like normal memory.
+
+This makes hardware access simple and fast.
+## 66.Define cache memory.
+Cache memory is a small, very fast memory placed between CPU and RAM.
+
+It stores recently used data so the CPU can access it quickly.
+
+Speeds up processing
+## 67 Explain the purpose of cache memory
+Cache memory makes the CPU faster by keeping important data close to it.
+
+To speed up CPU access to data.
+
+To store frequently used data so the CPU doesn’t go to slow RAM every time.
+
+To reduce waiting time and improve system performance.
+## 68 Describe the types of cache memory
+Types of Cache Memory (Simple Explanation)
+**1. L1 Cache (Level 1)**
+
+Closest to the CPU
+
+Very fast
+
+Very small (like 32KB – 64KB)
+
+**2. L2 Cache (Level 2)**
+
+Slower than L1
+
+Bigger than L1 (256KB – 1MB)
+
+**3. L3 Cache (Level 3)**
+
+Shared by all CPU cores
+
+Slower than L2
+
+Largest (4MB – 20MB)
+## 69 Discuss the cache coherence problem
+**When multiple processors or cores have their own caches:**
+
+They may store different copies of the same memory location.
+
+If one processor updates its cached copy, the other caches may still hold the old value.
+
+This leads to inconsistency, called the cache coherence problem.
+
+Cache coherence ensures that:
+
+All processors see a consistent and up-to-date view of shared data.
+
+**Solution**:
+
+Use cache coherence protocols such as MESI (Modified, Exclusive, Shared, Invalid) or directory-based methods to keep all cached copies synchronized.
+## 70 Explain cache replacement policies
+When the cache is full, old data must be removed to make space for new data.
+
+Cache replacement policies decide which data to remove.
+
+**1. LRU (Least Recently Used)**
+
+Removes the data that has not been used for the longest time.
+
+**2. FIFO (First In First Out)**
+
+Removes the data that entered the cache first (oldest data).
+
+**3. Random**
+
+Removes any block randomly.
+Simple but not always efficient.
+
+**4. LFU (Least Frequently Used)**
+
+Removes the data that has been used the least number of times.
+
+## 71.
