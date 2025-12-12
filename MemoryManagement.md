@@ -1137,4 +1137,209 @@ Simple but not always efficient.
 
 Removes the data that has been used the least number of times.
 
-## 71.
+## 71.What is cache associativity?
+Cache associativity defines how cache lines are placed in the cache:
+
+Types:
+
+**Direct-Mapped Cache**
+– Block can go to only ONE fixed location.
+
+**2-Way / 4-Way / N-Way Set Associative Cache**
+– Block can go to any one of N slots in a set.
+
+**Fully Associative Cache**
+– Block can go anywhere in the entire cache.
+
+## 72.Describe the working of cache memory
+Cache memory stores frequently accessed data:
+1. CPU looks in cache first.
+2. If found → fast access (cache hit)
+3. If not found → data fetched from RAM (cache miss)
+4. Cache is updated for future use
+
+## 73 Explain the cache hit and cache 
+Cache Hit
+
+A cache hit happens when the CPU asks for some data
+and that data is found in the cache.
+
+Result: Fast access, no need to go to main memory.
+
+Cache Miss
+
+A cache miss happens when the CPU asks for data
+but the data is NOT in the cache.
+
+Then CPU must fetch it from main memory, which is slower.
+
+After fetching, the data is stored in the cache.
+
+## 74 Discuss the importance of cache memory in memory management?
+ Speeds up data access
+- Reduces load on RAM
+- Helps CPU work faster
+- Optimizes system performance
+## 75 How does cache memory relate to memory hierarchy?
+Cache memory is part of the memory hierarchy, which is arranged from fastest to slowest:
+
+Registers
+
+Cache (L1, L2, L3)
+
+RAM
+
+Disk (SSD/HDD)
+
+Cloud/Network
+
+Role of Cache in the Hierarchy:
+
+Cache sits between CPU and RAM.
+
+It stores the most frequently used data.
+
+It helps the CPU access data much faster than going to RAM.
+
+## 76 Define memory protection
+Memory protection is a technique used by the operating system to prevent one process from accessing or modifying the memory of another process or the OS itself.
+
+## 77. Explain the need for memory protection
+Memory protection is needed to stop programs from accessing or damaging each other’s memory.
+
+Why it is needed:
+
+Prevent crashes
+One program should not overwrite another program’s memory.
+
+Increase security
+Stops malicious programs from reading sensitive data of other processes.
+
+Ensure stability
+Protects the OS memory so user programs cannot corrupt it.
+
+Controlled access
+Each program gets its own safe memory area.
+
+## 78 Describe the techniques for implementing memory protection.
+**Segmentation**
+
+Each segment has a base and limit, so the program cannot access outside its segment.
+
+**Paging**
+
+Each page has access rights (read/write/execute) to prevent illegal access.
+
+**Base and Limit Registers**
+
+These registers define a valid memory range for each process.
+
+**Privilege Levels (User/Kernel Mode)**
+
+User programs have limited permissions; only OS can access protected memory.
+
+## 79 What is segmentation fault?
+A segmentation fault happens when a program tries to access memory that it is not allowed to use.
+
+Causes
+
+Accessing memory outside your segment/page
+
+Using an invalid pointer
+
+Dereferencing NULL pointer
+
+Writing to read-only memory
+
+## 80 Explain the role of privilege levels in memory protection
+Privilege levels control what memory a program can access.
+
+Kernel mode → Full access (OS code, drivers, hardware).
+
+User mode → Limited access (only its own memory).
+
+**This separation protects the system, stopping user programs from:**
+
+Touching OS memory
+
+Accessing hardware directly
+
+Crashing the system
+## 81 Discuss the mechanism of memory protection in modern operating systems
+The OS isolates each process, gives permissions, and uses hardware checks to stop any wrong memory access.
+
+**Modern operating systems protect memory using:**
+
+**1. Paging & Segmentation**
+
+Every page or segment has permissions like read / write / execute.
+
+If a program tries to break the rule → OS stops it.
+
+**2. MMU (Memory Management Unit)**
+
+Hardware that checks every memory access.
+
+Ensures a program only accesses its allowed memory.
+
+**3. User Mode vs Kernel Mode**
+
+User mode → Apps (limited access)
+
+Kernel mode → OS (full access)
+Prevents apps from touching OS memory.
+
+**4. Page Table Permissions**
+
+Each page entry says what a process can do:
+
+Read
+
+Write
+
+Execute
+
+Or not allowed
+
+If violation happens → page fault.
+
+## 82 What are the security implications of memory protection?
+Security Implications of Memory Protection
+
+Memory protection helps to:
+
+Stop buffer overflows
+
+Prevent unauthorized access to other programs’ memory
+
+Protect the kernel and critical system data
+
+Enhance overall system security
+## 83 Explain the concept of memory isolation.
+Memory isolation means each process has its own separate memory space.
+
+One process cannot access another process’s memory.
+
+Helps prevent crashes and protect sensitive data.
+
+Ex:Program A crashes, Program B continues running safely because their memories are isolated.
+
+## 84  Discuss the challenges in implementing memory protection
+Complex when many processes run at the same time
+
+Requires support from both hardware (MMU) and OS
+
+Can cause performance overhead
+
+Harder in real-time or embedded systems with limited memory
+## 85 How does memory protection contribute to system security?
+Memory protection helps:
+
+Prevent malware from accessing sensitive data
+
+Stop unauthorized code execution
+
+Isolate faulty processes from affecting others
+
+Enforce access controls
+
