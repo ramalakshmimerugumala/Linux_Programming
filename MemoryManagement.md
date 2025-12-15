@@ -1343,3 +1343,148 @@ Isolate faulty processes from affecting others
 
 Enforce access controls
 
+## 86.Write a C program to demonstrate dynamic memory allocation using malloc()
+```
+#include <stdio.h>
+#include <stdlib.h>
+int main(){
+ int *arr[4];
+ printf("Enter elements");
+ for(int i=0;i<4;i++){
+     arr[i]=(int*)malloc(sizeof(int)); 
+      scanf("%d",arr[i]);
+     //*arr[i]=i;
+ }
+ for(int i=0;i<4;i++){
+     printf("arr[%d]=%d\n",i,*arr[i]);
+ }
+ for(int i=0;i<4;i++){
+     free(arr[i]);
+ }
+}
+```
+**Another Method**
+```
+#include <stdio.h>
+#include <stdlib.h>
+int main(){
+    int *ptr;
+    ptr=(int *)malloc(sizeof(int));
+    if(ptr==NULL){
+        printf("Memory is not allocated");
+    }
+   *ptr=20;
+    printf("%d",*ptr);
+    free(ptr);
+}
+```
+## 87 Implement a C program to allocate memory for an array dynamically using calloc().
+```
+#include <stdio.h>
+#include <stdlib.h>
+int main(){
+    int n=4;
+    int *arr;
+    arr=(int *)calloc(n,sizeof(int));
+    if(arr==NULL){
+        printf("Memory is  not created");
+    }
+    printf("Enter elements in the array");
+    for(int i=0;i<n;i++){
+     scanf("%d",&arr[i]);   
+    }
+    for(int i=0;i<n;i++){
+        printf("arr[%d]=%d\n",i,arr[i]);
+        printf("arr[%d]=%p\n",i,(void*)&arr[i]);
+    }
+     free(arr);
+}
+```
+## 88 Write a C program to resize dynamically allocated memory using realloc()
+```
+#include <stdio.h>
+#include <stdlib.h>
+int main(){
+ int n=3;
+ int *arr;
+ arr=(int *)malloc(n*sizeof(int));
+ for(int i=0;i<n;i++){
+     arr[i]=i;
+     printf("arr[%d]=%d\n",i,arr[i]);
+ }
+ printf("After reallocting the memory\n");
+ arr=(int *)realloc(arr,5*sizeof(int));
+ for(int i=0;i<5;i++){
+     arr[i]=i;
+     printf("arr[%d]=%d\n",i,arr[i]);
+ }
+ free(arr);
+}
+```
+## 89 Develop a program in C to allocate memory for a linked list node dynamically
+```
+#include <stdio.h>
+#include <stdlib.h>
+struct node{
+    int data;
+    struct node *next;
+};
+int main(){
+ struct node *head;
+ struct node *newnode;
+ newnode=(struct node *)malloc(sizeof(struct node));
+ newnode->data=30;
+ newnode->next=NULL;
+ printf("%d",newnode->data);
+ free(newnode);
+ return 0;
+}
+```
+## 90  Implement a C program to simulate memory allocation using the first-fit algorithm.
+```
+#include <stdio.h>
+int main(){
+    int n=4;
+    int blocks[n];
+    printf("Enter the size of each block");
+    for(int i=0;i<n;i++){
+        scanf("%d",&blocks[i]);
+    }
+    for(int i=0;i<n;i++){
+        printf("%d ",blocks[i]);
+    }
+    printf("\n");
+  int m=3;
+  int process[m];
+  printf("Enter the size of each memory block");
+  for(int i=0;i<m;i++){
+      scanf("%d",&process[i]);
+  }
+  for(int i=0;i<m;i++){
+      printf("%d ",process[i]);
+  }
+  printf("\n");
+  int allocation[m];
+  for(int i=0;i<m;i++){
+      allocation[i]=-1;
+  }
+  for(int i=0;i<m;i++){
+      for(int j=0;j<n;j++){
+          if(blocks[j]>=process[i]){
+          allocation[i]=j;
+          blocks[j]-=process[i];
+          break;
+          }
+      }
+  }
+  for(int i=0;i<m;i++){
+   printf("%d\t%d\t",i+1,process[i]);
+    if(allocation[i]!=-1)
+      printf("%d\n",allocation[i]+1);
+      else
+      printf("Not allocated");
+  }
+}
+```
+## 91.
+
