@@ -1485,6 +1485,14 @@ int main(){
       printf("Not allocated");
   }
 }
+output
+Enter the size of each block123 344 12  500 512
+123 344 500 512 
+Enter the size of each memory block344 456 345
+344 456 345 
+1	344	2
+2	456	3
+3	345	4
 ```
 ## 91.
 
