@@ -1486,7 +1486,7 @@ int main(){
   }
 }
 output
-Enter the size of each block123 344 12  500 512
+Enter the size of each block123 344 500 512
 123 344 500 512 
 Enter the size of each memory block344 456 345
 344 456 345 
@@ -1494,5 +1494,56 @@ Enter the size of each memory block344 456 345
 2	456	3
 3	345	4
 ```
-## 91.
-
+## 91.Write a C program to simulate memory allocation using the best-fit algorithm.
+```
+#include <stdio.h>
+int main(){
+ int n=4;
+ int blocks[n];
+ printf("Enter the size of blocks");
+ for(int i=0;i<n;i++){
+    scanf("%d",&blocks[i]);
+ }
+ for(int i=0;i<n;i++){
+     printf("%d ",blocks[i]);
+ }
+ printf("\n");
+ int m=3;
+ int process[m];
+ printf("Enter the size of eacch process\n");
+ for(int i=0;i<m;i++){
+     scanf("%d",&process[i]);
+ }
+ for(int i=0;i<m;i++){
+     printf("%d ",process[i]);
+ }
+ int allocation[m];
+ for(int i=0;i<m;i++){
+     allocation[i]=-1;
+ }
+ for(int i=0;i<m;i++){
+    int best=-1;
+     for(int j=0;j<n;j++){
+     if(blocks[j]>process[i]){
+      if(best==-1 || blocks[j]< blocks[best]){
+        best=j;  
+      }
+    }
+ }
+ if(best!=-1){
+     allocation[i]=best;
+     blocks[best]-=process[i];
+ }
+ }
+ for(int i=0;i<m;i++){
+    printf("%d\t %d\t",i+1,process[i]);
+    if(allocation[i]!=-1){
+        printf("%d\n",allocation[i]+1);
+    } 
+    else{
+        printf("Not allocated");
+    }
+ }
+}
+```
+## 92.
