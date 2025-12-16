@@ -1546,4 +1546,56 @@ int main(){
  }
 }
 ```
-## 92.
+## 92.Develop a C program to simulate memory allocation using the worst-fit algorithm
+```
+#include <stdio.h>
+int main(){
+  int n=4;
+  int blocks[n];
+  printf("ENter the size of blocks\n");
+  for(int i=0;i<n;i++){
+      scanf("%d",&blocks[i]);
+  }
+  for(int i=0;i<n;i++){
+      printf("%d ",blocks[i]);
+  }
+  printf("\n");
+  int m=3;
+  int process[m];
+  printf("Enter the size of each process\n");
+  for(int i=0;i<m;i++){
+    scanf("%d",&process[i]);
+  }
+  for(int i=0;i<m;i++){
+    printf("%d ",process[i]);
+  }
+  printf("\n");
+  int allocation[m];
+  for(int i=0;i<m;i++){
+       allocation[i]=-1;
+  }
+  for(int i=0;i<m;i++){
+      int worst=-1;
+      for(int j=0;j<n;j++){
+        if(blocks[j]>=process[i]){
+        if(worst==-1 || blocks[j]>blocks[worst]){
+            worst=j;
+        }    
+        }  
+      }
+      if(worst!=-1){
+        allocation[i]=worst;
+        blocks[worst]-=process[i];
+      }
+  }
+  for(int i=0;i<m;i++){
+  printf("%d\t%d\t",i+1,process[i]);
+  if(allocation[i]!=-1){
+      printf("%d\n",allocation[i]+1);
+  }
+  else{
+      printf("Not allocated\n");
+  }
+  }
+}
+```
